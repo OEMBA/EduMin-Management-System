@@ -1,0 +1,93 @@
+.activity-card {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.activity-header { margin-bottom: 14px; }
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.event-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.event-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--sidebar-bg);
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 44px;
+}
+
+.event-month {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-green);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.event-day {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 2px;
+}
+
+.event-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.event-sub {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.add-event-btn {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed #cbd5e1;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.add-event-btn:hover {
+  border-color: var(--accent-green);
+  color: #16a34a;
+  background: var(--accent-green-dim);
+}
