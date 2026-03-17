@@ -21,7 +21,20 @@ const STUDENTS = [
   { id: 12, name: 'Ama Darko', grade: '09', subject: 'History', status: 'pending' },
   { id: 13, name: 'Sylvia Mensah', grade: '09', subject: 'History', status: 'pending' },
   { id: 14, name: 'Solomon Asante', grade: '09', subject: 'History', status: 'pending' },
-  { id: 15, name: 'Samuel Kumi', grade: '09', subject: 'History', status: 'pending' },
+  { id: 15, name: 'Ryan Okyere', grade: '09', subject: 'History', status: 'pending' },
+  { id: 16, name: 'Steve Mensah', grade: '09', subject: 'History', status: 'pending' },
+  { id: 17, name: ' Kevin Asante', grade: '09', subject: 'History', status: 'pending' },
+  { id: 18, name: 'Nana Kwame', grade: '09', subject: 'History', status: 'pending' },
+  { id: 19, name: 'Kwaku Aboagye', grade: '09', subject: 'History', status: 'pending' },
+  { id: 20, name: 'Hilda Owusu', grade: '09', subject: 'History', status: 'pending' },
+  { id: 21, name: 'Stephanie Asante', grade: '09', subject: 'History', status: 'pending' },
+  { id: 22, name: 'Seth Kumi', grade: '09', subject: 'History', status: 'pending' },
+  { id: 23, name: 'Stan Kusi ', grade: '09', subject: 'History', status: 'pending' },
+  { id: 24, name: 'Elizabet Crsentsil', grade: '09', subject: 'History', status: 'pending' },
+  { id: 25, name: 'Christopher Brobbey', grade: '09', subject: 'History', status: 'pending' },
+  { id: 26, name: 'Awo Wiafewaa', grade: '09', subject: 'History', status: 'pending' },
+  { id: 27, name: 'Elliott Osei', grade: '09', subject: 'History', status: 'pending' },
+  { id: 28, name: 'Daniel Appiah', grade: '09', subject: 'History', status: 'pending' },
 ]
 
 // Get recently admitted (first 5 students)
