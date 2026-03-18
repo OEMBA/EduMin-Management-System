@@ -1,0 +1,55 @@
+.header-section{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+
+}
+
+.input-section{
+    width: 80%;
+    height: 2.3rem;
+    display: flex;
+    align-items: center;
+    background-color: #d0d3db;
+    border-radius: 2rem;
+    padding-left: 0.5rem;
+    gap: 0.3rem;
+}
+
+input{
+    flex-grow: 1;
+    border: none;
+    background-color: transparent;
+    height: 100%;
+    outline: none;
+}
+
+.notification{
+    color: #b4b8c5;
+}
+
+.admin-section{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.info p{
+    font-size: 0.7rem;
+}
+
+.profile{
+    background-color: #d0d3db;
+    color: #b4b8c5;
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+    padding: 0.3rem;
+}
