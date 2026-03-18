@@ -9,6 +9,18 @@ export default function EventModal({ isOpen, onClose, onAddEvent }) {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [time, setTime] = useState('09:00')
 
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ]
+
+  const handleMonthChange = (e) => {
+    const newMonth = parseInt(e.target.value)
+    const newDate = new Date(selectedDate)
+    newDate.setMonth(newMonth - 1)
+    setSelectedDate(newDate)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -63,6 +75,21 @@ export default function EventModal({ isOpen, onClose, onAddEvent }) {
               placeholder="e.g., Project Presentation"
               required
             />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="month">Select Month</label>
+            <select
+              id="month"
+              value={selectedDate.getMonth() + 1}
+              onChange={handleMonthChange}
+            >
+              {months.map((month, index) => (
+                <option key={index} value={index + 1}>
+                  {month}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="form-group">
