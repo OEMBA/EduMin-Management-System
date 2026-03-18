@@ -1,0 +1,122 @@
+.addstudent-section{
+    padding-inline: 3rem;
+    padding-top: 1.5rem;
+}
+
+.heading{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.heading p{
+    color: #27ae60;
+    font-size: 0.8rem;
+}
+
+.some-arc{
+    background-color: #1a2f5e;
+    padding: 0.8rem;
+    border-radius: 50px 50px 0 0;
+    margin-bottom: 0.3rem;
+}
+
+.input input{
+    border: none;
+    background-color: #d0d3db;
+    height: 100%;
+    outline: none;
+}
+
+.others{
+    padding-inline: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.personal-info{
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items:center;
+}
+
+.personal-inputs{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5rem;
+}
+
+.personal-inputs .input{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.personal-inputs .input input{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.academic-results{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.academic-results .top{
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.academic-inputs{
+    width: 100%;
+    height:auto;
+}
+
+.academic-inputs .inputs{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 3rem;
+}
+
+.inputs .input{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+}
+
+.input select{
+    background-color: #d0d3db;
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.input input{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.buttons{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 2rem;
+}
+
+button{
+    background-color: #0d1b3e;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    outline: none;
+    border: none;
+}

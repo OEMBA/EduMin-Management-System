@@ -5,7 +5,7 @@ function Header() {
         <header className="header-section">
             <div className="input-section">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search students classes or reports..." />
+                <input type="text" placeholder="Search students classes or reports..." className="header-input" />
             </div>
 
             <div className="notification">
