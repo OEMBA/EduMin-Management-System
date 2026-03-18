@@ -1,4 +1,5 @@
 import './Sidebar.css'
+import graduateLogo from './graduate-hat.png'
 
 const NAV_ITEMS = [
   { id: 'dashboard', label: 'Dashboard', icon: '⊞' },
@@ -11,7 +12,7 @@ export default function Sidebar({ activePage, onNavigate }) {
     <aside className="sidebar">
       <div className="sidebar-logo">
         <div className="logo-icon">
-          <span>🎓</span>
+          <img src={graduateLogo} alt="EduMin Logo" />
         </div>
         <div className="logo-text">
           <span className="logo-name">EduMin</span>
