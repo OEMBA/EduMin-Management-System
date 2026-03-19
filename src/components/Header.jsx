@@ -3,6 +3,10 @@ import "../styling/header.css"
 function Header() {
     return (
         <header className="header-section">
+            <div className="menu">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+
             <div className="input-section">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search students classes or reports..." className="header-input" />

@@ -48,7 +48,7 @@ function AddStudent() {
                     </div>
                 </div>
 
-                <div className="academic-results">
+                <div className="academic-details">
                     <div className="top">
                         <i class="fa-solid fa-graduation-cap"></i>
                         <h5>Academic Details</h5>
@@ -58,7 +58,7 @@ function AddStudent() {
                         <div className="inputs">
                             <div className="input">
                                 <label htmlFor="Program">Program Of Study</label>
-                                <select name="Programs" id="programs" defaultValue="" placeholder="Enter">
+                                <select name="Programs" id="programs" defaultValue="">
                                     <option value="" disabled hidden>Choose your program</option>
                                     <option value="cs">BSc. Computer Science</option>
                                     <option value="it">BSc. Information Technology</option>
@@ -72,7 +72,7 @@ function AddStudent() {
 
                             <div className="input">
                                 <label htmlFor="level">Level</label>
-                                <select name="level" id="level">
+                                <select name="level" id="level" defaultValue="">
                                     <option value="" disabled hidden>Select your level</option>
                                     <option value="100">100</option>
                                     <option value="200">200</option>

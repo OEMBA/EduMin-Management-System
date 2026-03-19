@@ -53,3 +53,9 @@ a{
 a.active{
     background-color: #1a2f5e;
 }
+
+@media (max-width: 1000px) {
+    .navbar-section{
+        display: none;
+    }
+}

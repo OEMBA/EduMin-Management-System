@@ -29,7 +29,7 @@
 }
 
 .others{
-    padding-inline: 3rem;
+    padding-inline: 2rem;
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -60,13 +60,13 @@
     border-radius: 0.5rem;
 }
 
-.academic-results{
+.academic-details{
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.academic-results .top{
+.academic-details .top{
     display: flex;
     gap: 0.5rem;
     font-size: 1.2rem;
@@ -83,7 +83,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 3rem;
+    gap: 2.5rem;
 }
 
 .inputs .input{
@@ -119,4 +119,26 @@ button{
     border-radius: 0.5rem;
     outline: none;
     border: none;
+}
+
+@media (max-width: 780px){
+    .personal-inputs{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px){
+    .personal-inputs{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .academic-inputs .inputs{
+        flex-direction: column;
+    }
+
+    .academic-inputs .inputs .input{
+        width: 100%;
+    }
 }
