@@ -10,7 +10,7 @@
     flex-grow: 1;
     height: 100vh;
     overflow-y: auto;
-    padding: 1rem;
+    padding: 0 1rem 1rem 1rem;
     background-color: #f5f7fb;
 }
 

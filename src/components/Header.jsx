@@ -4,16 +4,16 @@ function Header({onMenuClick}) {
     return (
         <header className="header-section">
             <div className="menu" onClick={onMenuClick}>
-                <i class="fa-solid fa-bars"></i>
+                <i className="fa-solid fa-bars"></i>
             </div>
 
             <div className="input-section">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                <i className="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search students classes or reports..." className="header-input" />
             </div>
 
             <div className="notification">
-                <i class="fa-solid fa-bell"></i>
+                <i className="fa-solid fa-bell"></i>
             </div>
 
             <div className="admin-section">
@@ -23,7 +23,7 @@ function Header({onMenuClick}) {
                 </div>
 
                 <div className="profile">
-                    <i class="fa-solid fa-user"></i>
+                    <i className="fa-solid fa-user"></i>
                 </div>
             </div>
         </header>
