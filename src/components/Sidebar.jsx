@@ -1,9 +1,9 @@
 import { NavLink } from "react-router-dom"
 import "../styling/sidebar.css"
 
-function Sidebar() {
+function Sidebar({ isOpen, isClosed }) {
     return (
-        <section className="navbar-section">
+        <section className={`navbar-section ${isOpen ? "show" : "hide"}`}>
             <div className="logo-section">
                 <div className="logo">
                     <img src="vite.svg" alt="Logo" />
@@ -17,19 +17,19 @@ function Sidebar() {
 
             <hr />
 
-            <div className="tabs">
+            <div className="tabs" onClick={isClosed}>
                 <NavLink to="/" className="tab">
-                    <i class="fa-solid fa-table-columns"></i>
+                    <i className="fa-solid fa-table-columns"></i>
                     Dashboard
                 </NavLink>
 
                 <NavLink to="/addstudent" className="tab">
-                    <i class="fa-solid fa-user-plus"></i>
+                    <i className="fa-solid fa-user-plus"></i>
                     Add Students
                 </NavLink>
 
                 <NavLink to="/viewstudent" className="tab">
-                    <i class="fa-solid fa-users"></i>
+                    <i className="fa-solid fa-users"></i>
                     View Students
                 </NavLink>
             </div>

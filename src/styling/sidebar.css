@@ -55,7 +55,20 @@ a.active{
 }
 
 @media (max-width: 1000px) {
-    .navbar-section{
-        display: none;
+    .navbar-section {
+        position: fixed;
+        left: 0;
+        top: 0;
+        transform: translateX(0);
+        transition: transform 0.3s ease-in-out;
+        z-index: 100;
+    }
+
+    .navbar-section.hide {
+        transform: translateX(-100%);
+    }
+
+    .navbar-section.show {
+        transform: translateX(0);
     }
 }

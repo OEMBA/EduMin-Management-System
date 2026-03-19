@@ -10,6 +10,13 @@
     display: none;
 }
 
+.menu:hover{
+    background-color: #1a2f5e;
+    color: #fff;
+    padding: 0.3rem;
+    border-radius: 50%;
+}
+
 .input-section{
     width: 80%;
     height: 2.3rem;
@@ -31,13 +38,15 @@
 
 .notification{
     color: #b4b8c5;
+    cursor: pointer;
 }
 
 .admin-section{
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    cursor: pointer;
+    gap: 0.2rem;
 }
 
 .info{
@@ -66,6 +75,7 @@
 
     .menu{
         display: block;
+        cursor: pointer;
     }
 
     .input-section{

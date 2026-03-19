@@ -1,9 +1,9 @@
 import "../styling/header.css"
 
-function Header() {
+function Header({onMenuClick}) {
     return (
         <header className="header-section">
-            <div className="menu">
+            <div className="menu" onClick={onMenuClick}>
                 <i class="fa-solid fa-bars"></i>
             </div>
 
