@@ -1,0 +1,22 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa; /* Light grey background like the design doc */
+}
+
+.content-area {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto; /* Allows only the page content to scroll */
+}
+
+/* Handles the space when sidebar is open vs closed */
+.shifted { margin-left: 0; }
