@@ -2,6 +2,10 @@ import { useState } from "react"
 import "../styling/addstudent.css"
 
 function AddStudent() {
+    const generateId = () => {
+        return "STU-" + Math.floor(100000 + Math.random() * 900000)
+    }
+
     const [formData, setFormData] = useState({
         firstName: "",
         secondName: "",
@@ -11,7 +15,7 @@ function AddStudent() {
         phoneNumber: "",
         program: "",
         level: "",
-        studentId: ""
+        studentId: generateId()
     })
 
     const handleChange = (e) => {
@@ -35,11 +39,14 @@ function AddStudent() {
         existing.push(newStudent)
         localStorage.setItem("students", JSON.stringify(existing))
 
+        // ✅ Generate NEW ID here
+        const newId = generateId()
+
         // Reset form
         setFormData({
             firstName: "", secondName: "", otherName: "",
             dateOfBirth: "", email: "", phoneNumber: "",
-            program: "", level: "", studentId: ""
+            program: "", level: "", studentId: newId
         })
 
         alert("Student added successfully!")
@@ -72,7 +79,7 @@ function AddStudent() {
                     </div>
 
                     <div className="input">
-                        <label htmlFor="otherName">Other Name*</label>
+                        <label htmlFor="otherName">Last Name*</label>
                         <input type="text" name="otherName" placeholder="eg. Samuel" value={formData.otherName} onChange={handleChange} required />
                     </div>
 
@@ -126,7 +133,10 @@ function AddStudent() {
 
                             <div className="input">
                                 <label htmlFor="studentId">Student Id*</label>
-                                <input type="text" name="studentId" placeholder="eg. STU-2024-001" value={formData.studentId} onChange={handleChange} required />
+                                <input type="text"
+                                    name="studentId"
+                                    value={formData.studentId}
+                                    readOnly />
                             </div>
                         </div>
                     </div>
