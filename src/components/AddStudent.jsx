@@ -63,7 +63,7 @@ function AddStudent() {
 
             <form className="others" onSubmit={handleSubmit}>
                 <div className="personal-info">
-                    <i className="fa-regular fa-user"></i>
+                    <i className="fa-regular fa-id-badge"></i>
                     <h3>Personal Information</h3>
                 </div>
 

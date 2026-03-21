@@ -6,7 +6,7 @@ function Sidebar({ isOpen, isClosed }) {
         <section className={`navbar-section ${isOpen ? "show" : "hide"}`}>
             <div className="logo-section">
                 <div className="logo">
-                    <img src="vite.svg" alt="Logo" />
+                    <img src="graduate-hat.png" alt="Logo" />
                 </div>
 
                 <div className="institution-name">
