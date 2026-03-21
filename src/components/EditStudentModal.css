@@ -1,0 +1,187 @@
+/* ── Modal Overlay ──────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(13, 27, 62, 0.55);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+
+/* ── Edit Modal ─────────────────────────────────────────── */
+.edit-modal {
+  position: relative;
+  background-color: #ffffff;
+  border: 1px solid #D0D3DB;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 540px;
+}
+
+/* Header */
+.edit-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #D0D3DB;
+}
+
+.edit-modal__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0D1B3E;
+}
+
+.edit-modal__subtitle {
+  font-size: 12px;
+  color: #8A8F9A;
+  margin-top: 3px;
+}
+
+.edit-modal__close {
+  padding: 8px;
+  border-radius: 8px;
+  color: #8A8F9A;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.edit-modal__close:hover {
+  background-color: #F4F5F7;
+  color: #CC1F1F;
+}
+
+/* ID Chip */
+.edit-modal__id-wrap {
+  padding: 16px 24px 0;
+}
+
+.edit-modal__id-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: #F4F5F7;
+  border: 1px solid #D0D3DB;
+}
+
+.edit-modal__id-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8A8F9A;
+}
+
+.edit-modal__id-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0D1B3E;
+}
+
+/* Form Grid */
+.edit-modal__form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  padding: 20px 24px;
+}
+
+/* Form Fields */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-field__label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: #1A2F5E;
+}
+
+.form-field__required {
+  color: #CC1F1F;
+}
+
+.form-field__input,
+.form-field__select {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 13px;
+  background-color: #F4F5F7;
+  border: 1.5px solid #D0D3DB;
+  border-radius: 8px;
+  color: #1A1A2E;
+  outline: none;
+  transition: border-color 0.15s;
+  appearance: none;
+}
+
+.form-field__input:focus,
+.form-field__select:focus {
+  border-color: #2B4EAF;
+  background-color: #ffffff;
+}
+
+.form-field__select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235A5F6E' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.form-field__error {
+  font-size: 11px;
+  color: #CC1F1F;
+}
+
+/* Footer */
+.edit-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid #D0D3DB;
+}
+
+/* Buttons */
+.btn {
+  padding: 9px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  border: none;
+}
+
+.btn--cancel {
+  background-color: #F4F5F7;
+  color: #1A1A2E;
+  border: 1.5px solid #D0D3DB;
+}
+
+.btn--cancel:hover {
+  background-color: #E8E9EC;
+}
+
+.btn--save {
+  background-color: #0D1B3E;
+  color: #ffffff;
+}
+
+.btn--save:hover {
+  background-color: #1A2F5E;
+}

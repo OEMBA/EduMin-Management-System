@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import Sidebar from './components/Sidebar.jsx';
+import Header from './components/Header.jsx';
+import ViewStudents from './pages/ViewStudents.jsx';
+// import Dashboard from './pages/Dashboard.jsx';     // Uncomment when you have these
+// import AddStudents from './pages/AddStudents.jsx'; // Uncomment when you have these
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [activePage,   setActivePage]   = useState('view-students');
+  const [searchQuery,  setSearchQuery]  = useState('');
+
+  // Remove this - not needed anymore
+  // useEffect(() => { seedStudentsIfEmpty(); }, []);
+
+  const handleNavigate = (page) => {
+    setActivePage(page);
+    if (page !== 'view-students') setSearchQuery('');
+  };
+
+  const handleSearch = (q) => {
+    setSearchQuery(q);
+    if (q.trim() && activePage !== 'view-students') setActivePage('view-students');
+  };
+
+  const renderPage = () => {
+    switch (activePage) {
+      case 'dashboard':     
+        return <div>Dashboard (Coming Soon)</div>; // Replace with <Dashboard /> when ready
+      case 'add-students':  
+        return <div>Add Students (Coming Soon)</div>; // Replace with <AddStudents /> when ready
+      case 'view-students': 
+        return <ViewStudents searchQuery={searchQuery} />;
+      default:              
+        return <ViewStudents searchQuery={searchQuery} />;
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <Sidebar activePage={activePage} onNavigate={handleNavigate} />
+      <div className="app__main">
+        <Header searchQuery={searchQuery} onSearchChange={handleSearch} />
+        <main className="app__content">
+          {renderPage()}
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
-
-export default App

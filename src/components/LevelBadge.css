@@ -1,0 +1,36 @@
+/* ── Level Badge ────────────────────────────────────────── */
+.level-badge {
+  display: inline-block;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  border-width: 1.5px;
+  border-style: solid;
+}
+
+.level-badge--undergraduate {
+  background-color: #1A2F5E;
+  color: #ffffff;
+  border-color: #2B4EAF;
+}
+
+.level-badge--graduate {
+  background-color: #2B4EAF;
+  color: #ffffff;
+  border-color: #2D9CDB;
+}
+
+.level-badge--postgraduate {
+  background-color: #1A2F5E;
+  color: #2D9CDB;
+  border-color: #2D9CDB;
+}
+
+.level-badge--default {
+  background-color: #F4F5F7;
+  color: #1A1A2E;
+  border-color: #D0D3DB;
+}
