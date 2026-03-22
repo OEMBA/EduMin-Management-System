@@ -22,6 +22,8 @@ export function normalizeStudent(student) {
     otherNames: String(student?.otherNames ?? student?.otherName ?? '').trim(),
     secondName: String(student?.secondName ?? student?.lastName ?? '').trim(),
     dateOfBirth: String(student?.dateOfBirth ?? '').trim(),
+    email: String(student?.email ?? '').trim(),
+    phone: String(student?.phone ?? '').trim(),
     level: String(student?.level ?? '').trim(),
     programOfStudy: String(student?.programOfStudy ?? student?.program ?? '').trim(),
   }

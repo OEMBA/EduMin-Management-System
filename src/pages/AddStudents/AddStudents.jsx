@@ -1,125 +1,274 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.js'
 
-function generateStudentId(existing) {
-  const year = new Date().getFullYear()
-  const prefix = `STU-${year}-`
-  const used = new Set(existing.map((s) => String(s.studentID || '')))
-  for (let i = 1; i < 100000; i++) {
-    const candidate = `${prefix}${String(i).padStart(3, '0')}`
-    if (!used.has(candidate)) return candidate
-  }
-  return `${prefix}${Date.now()}`
+const REQUIRED_MSG = '*input required*'
+
+const initialForm = {
+  firstName: '',
+  secondName: '',
+  otherNames: '',
+  dateOfBirth: '',
+  email: '',
+  phone: '',
+  programOfStudy: '',
+  level: '',
+  studentID: '',
 }
 
 export function AddStudents() {
-  const [form, setForm] = useState({
-    studentID: '',
-    firstName: '',
-    otherNames: '',
-    secondName: '',
-    dateOfBirth: '',
-    level: 'Undergraduate',
-    programOfStudy: 'Computer Science',
-  })
-  const [status, setStatus] = useState('')
+  const navigate = useNavigate()
+  const [form, setForm] = useState(initialForm)
+  const [errors, setErrors] = useState({})
 
-  const levelOptions = useMemo(() => ['Undergraduate', 'Diploma', 'Postgraduate'], [])
   const programOptions = useMemo(
-    () => ['Computer Science', 'Information Technology', 'Business Administration', 'Accounting', 'Engineering'],
+    () => [
+      'Computer Science',
+      'Data Science',
+      'Information Technology',
+      'Business Administration',
+      'Accounting',
+      'Engineering',
+      'Medicine',
+      'Law',
+    ],
     [],
   )
 
+  const levelOptions = useMemo(() => ['Undergraduate', 'Graduate', 'Postgraduate', 'Diploma'], [])
+
+  function clearError(field) {
+    setErrors((prev) => {
+      if (!prev[field]) return prev
+      const next = { ...prev }
+      delete next[field]
+      return next
+    })
+  }
+
   function onChange(field) {
-    return (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))
+    return (e) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.value }))
+      clearError(field)
+    }
+  }
+
+  function validate() {
+    const nextErrors = {}
+    const check = (key, value) => {
+      if (!String(value ?? '').trim()) nextErrors[key] = REQUIRED_MSG
+    }
+
+    check('firstName', form.firstName)
+    check('secondName', form.secondName)
+    check('dateOfBirth', form.dateOfBirth)
+    check('email', form.email)
+    check('phone', form.phone)
+    check('programOfStudy', form.programOfStudy)
+    check('level', form.level)
+    check('studentID', form.studentID)
+
+    setErrors(nextErrors)
+    return Object.keys(nextErrors).length === 0
   }
 
   function onSubmit(e) {
     e.preventDefault()
-    const existing = loadStudents()
-    const studentID = form.studentID?.trim() || generateStudentId(existing)
-    const normalized = normalizeStudent({ ...form, studentID })
+    if (!validate()) return
 
-    if (!normalized.firstName || !normalized.secondName || !normalized.level || !normalized.programOfStudy) {
-      setStatus('Please fill First Name, Second Name, Level, and Program.')
-      return
-    }
+    const existing = loadStudents()
+    const normalized = normalizeStudent(form)
 
     const next = [...existing.filter((s) => String(s.studentID) !== normalized.studentID), normalized]
     saveStudents(next)
-    setStatus(`Saved ${normalized.studentID}.`)
-    setForm((p) => ({ ...p, studentID: '' }))
+    setForm(initialForm)
+    setErrors({})
+    navigate('/students/view')
+  }
+
+  function onCancel() {
+    setForm(initialForm)
+    setErrors({})
   }
 
   return (
-    <section className="page">
-      <div className="pageHeader">
-        <div>
-          <h1 className="pageTitle">Add Students</h1>
-          <p className="pageDescription">Register a new student record.</p>
-        </div>
-      </div>
+    <section className="page addStudentPage">
+      <h1 className="addStudentMainTitle">Add New Student</h1>
+      <p className="addStudentMainSubtitle">Enroll a new student into the institutional database.</p>
 
-      <div className="panel">
-        <form className="form" onSubmit={onSubmit}>
-          <div className="formGrid">
-            <label className="field">
-              <span className="fieldLabel">Student ID (optional)</span>
-              <input className="input" value={form.studentID} onChange={onChange('studentID')} placeholder="STU-2024-001" />
+      <div className="addStudentCard">
+        <form className="addStudentForm" onSubmit={onSubmit} noValidate>
+          <h2 className="addSectionHeaderBar">
+            <span className="addSectionHeaderIcon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 5h16v14H4V5zm2 2v10h12V7H6zm2 2h8v1.5H8V9zm0 3h6v1.5H8V12z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Personal Information
+          </h2>
+
+          <div className="addFormGrid3">
+            <label className="addField">
+              <span className="addFieldLabel">
+                First Name <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.firstName ? ' addInputError' : ''}`}
+                value={form.firstName}
+                onChange={onChange('firstName')}
+                placeholder="e.g Samuel"
+                autoComplete="given-name"
+              />
+              {errors.firstName ? <span className="addFieldError">{errors.firstName}</span> : null}
             </label>
 
-            <label className="field">
-              <span className="fieldLabel">First Name</span>
-              <input className="input" value={form.firstName} onChange={onChange('firstName')} />
+            <label className="addField">
+              <span className="addFieldLabel">
+                Second Name <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.secondName ? ' addInputError' : ''}`}
+                value={form.secondName}
+                onChange={onChange('secondName')}
+                placeholder="e.g Samuel"
+                autoComplete="family-name"
+              />
+              {errors.secondName ? <span className="addFieldError">{errors.secondName}</span> : null}
             </label>
 
-            <label className="field">
-              <span className="fieldLabel">Other Names</span>
-              <input className="input" value={form.otherNames} onChange={onChange('otherNames')} />
+            <label className="addField">
+              <span className="addFieldLabel">Other Name</span>
+              <input
+                className="addInput"
+                value={form.otherNames}
+                onChange={onChange('otherNames')}
+                placeholder="e.g Samuel"
+              />
             </label>
 
-            <label className="field">
-              <span className="fieldLabel">Second Name</span>
-              <input className="input" value={form.secondName} onChange={onChange('secondName')} />
+            <label className="addField">
+              <span className="addFieldLabel">
+                Date of Birth <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.dateOfBirth ? ' addInputError' : ''}`}
+                type="date"
+                value={form.dateOfBirth}
+                onChange={onChange('dateOfBirth')}
+              />
+              {errors.dateOfBirth ? <span className="addFieldError">{errors.dateOfBirth}</span> : null}
             </label>
 
-            <label className="field">
-              <span className="fieldLabel">Date of Birth</span>
-              <input className="input" type="date" value={form.dateOfBirth} onChange={onChange('dateOfBirth')} />
+            <label className="addField">
+              <span className="addFieldLabel">
+                Email <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.email ? ' addInputError' : ''}`}
+                type="email"
+                value={form.email}
+                onChange={onChange('email')}
+                placeholder="@gmail.com"
+                autoComplete="email"
+              />
+              {errors.email ? <span className="addFieldError">{errors.email}</span> : null}
             </label>
 
-            <label className="field">
-              <span className="fieldLabel">Level</span>
-              <select className="input" value={form.level} onChange={onChange('level')}>
-                {levelOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
-                ))}
-              </select>
+            <label className="addField">
+              <span className="addFieldLabel">
+                Phone number <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.phone ? ' addInputError' : ''}`}
+                type="tel"
+                value={form.phone}
+                onChange={onChange('phone')}
+                placeholder="+233"
+                autoComplete="tel"
+              />
+              {errors.phone ? <span className="addFieldError">{errors.phone}</span> : null}
             </label>
+          </div>
 
-            <label className="field">
-              <span className="fieldLabel">Program</span>
-              <select className="input" value={form.programOfStudy} onChange={onChange('programOfStudy')}>
+          <h2 className="addSectionTitleAcademic">
+            <span className="addSectionAcademicIcon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 3L2 8l10 5 8-4v7h2V8L12 3zm0 2.18L17.09 8 12 10.82 6.91 8 12 5.18zM4 10v8l8 4 8-4v-8l-8 4-8-4z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            Academic Details
+          </h2>
+
+          <div className="addFormGrid3">
+            <label className="addField">
+              <span className="addFieldLabel">
+                Program of Study <span className="addReq">*</span>
+              </span>
+              <select
+                className={`addInput addSelect${errors.programOfStudy ? ' addInputError' : ''}`}
+                value={form.programOfStudy}
+                onChange={onChange('programOfStudy')}
+              >
+                <option value="">Choose Your Program</option>
                 {programOptions.map((opt) => (
                   <option key={opt} value={opt}>
                     {opt}
                   </option>
                 ))}
               </select>
+              {errors.programOfStudy ? <span className="addFieldError">{errors.programOfStudy}</span> : null}
+            </label>
+
+            <label className="addField">
+              <span className="addFieldLabel">
+                Level <span className="addReq">*</span>
+              </span>
+              <select
+                className={`addInput addSelect${errors.level ? ' addInputError' : ''}`}
+                value={form.level}
+                onChange={onChange('level')}
+              >
+                <option value="">Your academic year</option>
+                {levelOptions.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+              {errors.level ? <span className="addFieldError">{errors.level}</span> : null}
+            </label>
+
+            <label className="addField">
+              <span className="addFieldLabel">
+                Student ID <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.studentID ? ' addInputError' : ''}`}
+                value={form.studentID}
+                onChange={onChange('studentID')}
+                placeholder="Enter your ID"
+                autoComplete="off"
+              />
+              {errors.studentID ? <span className="addFieldError">{errors.studentID}</span> : null}
             </label>
           </div>
 
-          <div className="formActions">
-            <button className="btnPrimary" type="submit">
-              Save Student
+          <div className="addFormActionsRow">
+            <button className="addBtnSubmit" type="submit">
+              Submit Student Record
             </button>
-            {status ? <div className="formStatus">{status}</div> : null}
+            <button className="addBtnCancel" type="button" onClick={onCancel}>
+              Cancel
+            </button>
           </div>
         </form>
       </div>
     </section>
   )
 }
-

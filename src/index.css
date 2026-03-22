@@ -479,8 +479,8 @@ a {
 .iconBtn {
   border-radius: 12px;
   border: 1px solid transparent;
-  background: transparent;
-  color: var(--text);
+  background: aquamarine;
+  color: white;
   padding: 10px 12px;
   cursor: pointer;
 }
@@ -573,6 +573,174 @@ a {
 .formStatus {
   color: var(--muted);
   font-size: 13px;
+}
+
+/* —— Add New Student page (mockup) —— */
+.addStudentPage {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.addStudentMainTitle {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+  font-weight: 700;
+  color: #0c1220;
+  letter-spacing: -0.02em;
+}
+
+.addStudentMainSubtitle {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.addStudentCard {
+  margin-top: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+  padding: 22px 24px 26px;
+}
+
+.addStudentForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.addSectionHeaderBar {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #1a2238, #141b2e);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.addSectionHeaderIcon {
+  display: inline-flex;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.addFormGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 20px;
+}
+
+.addField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.addFieldLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(12, 18, 32, 0.85);
+}
+
+.addReq {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.addInput,
+.addSelect {
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #e8e8ec;
+  color: #0c1220;
+  padding: 11px 14px;
+  font-size: 0.9rem;
+  outline: none;
+  width: 100%;
+}
+
+.addInput::placeholder {
+  color: rgba(12, 18, 32, 0.45);
+}
+
+.addInput:focus,
+.addSelect:focus {
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  background: #f0f0f3;
+}
+
+.addInputError {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15);
+}
+
+.addFieldError {
+  font-size: 0.75rem;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.addSectionTitleAcademic {
+  margin: 4px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0c1220;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.addSectionAcademicIcon {
+  display: inline-flex;
+  color: #0c1220;
+}
+
+.addFormActionsRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.addBtnSubmit,
+.addBtnCancel {
+  border-radius: 10px;
+  padding: 12px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: linear-gradient(180deg, #1a2238, #141b2e);
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(26, 34, 56, 0.35);
+}
+
+.addBtnCancel {
+  padding: 10px 18px;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 14px rgba(26, 34, 56, 0.25);
+}
+
+.addBtnSubmit:hover,
+.addBtnCancel:hover {
+  filter: brightness(1.06);
+}
+
+@media (max-width: 900px) {
+  .addFormGrid3 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cardGrid {
@@ -864,20 +1032,25 @@ a {
   .appShell {
     grid-template-columns: 1fr;
   }
+
   .sidebar {
     position: sticky;
     top: 0;
     z-index: 30;
   }
+
   .cardGrid {
     grid-template-columns: 1fr;
   }
+
   .formGrid {
     grid-template-columns: 1fr;
   }
+
   .dashLower {
     grid-template-columns: 1fr;
   }
+
   .vsTableHeader,
   .vsRow {
     grid-template-columns: 1fr 1.4fr 1fr 1.2fr 0.8fr;
