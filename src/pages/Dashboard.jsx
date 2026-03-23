@@ -3,60 +3,27 @@ import StatsBanner from '../components/StatsBanner'
 import RecentStudentsCard from '../components/RecentStudentsCard'
 import ActivityCard from '../components/ActivityCard'
 import EventModal from '../components/EventModal'
+import { useStudents } from '../context/StudentContext'
 import './Dashboard.css'
 
-// Complete list of all students - local data source
-const STUDENTS = [
-  { id: 1, name: 'Alex Johnson', grade: '10', subject: 'General Science', status: 'verified' },
-  { id: 2, name: 'Sarah Smith', grade: '08', subject: 'Arts', status: 'verified' },
-  { id: 3, name: 'Michael Abbeng', grade: '12', subject: 'Economics', status: 'pending' },
-  { id: 4, name: 'Emily Martin', grade: '09', subject: 'Commerce', status: 'verified' },
-  { id: 5, name: 'David Lee', grade: '11', subject: 'General Science', status: 'verified' },
-  { id: 6, name: 'Jessica Wong', grade: '10', subject: 'Mathematics', status: 'verified' },
-  { id: 7, name: 'Robert Taylor', grade: '12', subject: 'Physics', status: 'verified' },
-  { id: 8, name: 'Adolf Boateng', grade: '09', subject: 'History', status: 'pending' },
-  { id: 9, name: 'Henry Okyere', grade: '09', subject: 'History', status: 'pending' },
-  { id: 10, name: 'Samuel Appiah', grade: '09', subject: 'History', status: 'pending' },
-  { id: 11, name: 'Diana Asante', grade: '09', subject: 'History', status: 'pending' },
-  { id: 12, name: 'Ama Darko', grade: '09', subject: 'History', status: 'pending' },
-  { id: 13, name: 'Sylvia Mensah', grade: '09', subject: 'History', status: 'pending' },
-  { id: 14, name: 'Solomon Asante', grade: '09', subject: 'History', status: 'pending' },
-  { id: 15, name: 'Ryan Okyere', grade: '09', subject: 'History', status: 'pending' },
-  { id: 16, name: 'Steve Mensah', grade: '09', subject: 'History', status: 'pending' },
-  { id: 17, name: ' Kevin Asante', grade: '09', subject: 'History', status: 'pending' },
-  { id: 18, name: 'Nana Kwame', grade: '09', subject: 'History', status: 'pending' },
-  { id: 19, name: 'Kwaku Aboagye', grade: '09', subject: 'History', status: 'pending' },
-  { id: 20, name: 'Hilda Owusu', grade: '09', subject: 'History', status: 'pending' },
-  { id: 21, name: 'Stephanie Asante', grade: '09', subject: 'History', status: 'pending' },
-  { id: 22, name: 'Seth Kumi', grade: '09', subject: 'History', status: 'pending' },
-  { id: 23, name: 'Stan Kusi ', grade: '09', subject: 'History', status: 'pending' },
-  { id: 24, name: 'Elizabet Crsentsil', grade: '09', subject: 'History', status: 'pending' },
-  { id: 25, name: 'Christopher Brobbey', grade: '09', subject: 'History', status: 'pending' },
-  { id: 26, name: 'Awo Wiafewaa', grade: '09', subject: 'History', status: 'pending' },
-  { id: 27, name: 'Elliott Osei', grade: '09', subject: 'History', status: 'pending' },
-  { id: 28, name: 'Daniel Appiah', grade: '09', subject: 'History', status: 'pending' },
-]
-
-// Get recently admitted (first 5 students)
-const RECENT_STUDENTS = STUDENTS.slice(0, 5)
-
-const UPCOMING_EVENTS = [
-  { month: 3, day: 30, title: 'Project Presentation', subtitle: '9:00 AM – 12:00 PM' },
-  { month: 4, day: 4, title: 'Faculty Meeting', subtitle: 'Conference Hall A' },
-  { month: 8, day: 1, title: 'Annual Sports Day', subtitle: 'Main Stadium' },
-]
-
 export default function Dashboard() {
-  // Total students count from the local list
-  const totalStudents = STUDENTS.length
+  const { getStudentCount, getRecentStudents } = useStudents()
+  
+  // Total students count from context
+  const totalStudents = getStudentCount()
+  const RECENT_STUDENTS = getRecentStudents(5)
   
   // State for events and modal
-  const [events, setEvents] = useState(UPCOMING_EVENTS)
+  const [events, setEvents] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleAddEvent = (newEvent) => {
     setEvents([...events, newEvent])
     setIsModalOpen(false)
+  }
+
+  const handleDeleteEvent = (eventIndex) => {
+    setEvents(events.filter((_, i) => i !== eventIndex))
   }
 
   const handleOpenAddEventModal = () => {
@@ -83,6 +50,7 @@ export default function Dashboard() {
         <ActivityCard
           events={events}
           onAddEvent={handleOpenAddEventModal}
+          onDeleteEvent={handleDeleteEvent}
         />
       </div>
 
