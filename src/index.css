@@ -479,7 +479,7 @@ a {
 .iconBtn {
   border-radius: 12px;
   border: 1px solid transparent;
-  background: aquamarine;
+  background: transparent;
   color: white;
   padding: 10px 12px;
   cursor: pointer;
@@ -503,7 +503,7 @@ a {
 .btnSmall,
 .btnSmallDanger {
   padding: 8px 10px;
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(239, 10, 10, 0.12);
   background: rgba(255, 255, 255, 0.04);
 }
 
@@ -513,7 +513,7 @@ a {
 }
 
 .btnDanger {
-  background: rgba(239, 68, 68, 0.16);
+  background: rgba(241, 7, 7, 0.16);
   border-color: rgba(239, 68, 68, 0.35);
 }
 
@@ -553,7 +553,7 @@ a {
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(0, 0, 0, 0.2);
-  color: var(--text);
+  color: white;
   padding: 10px 12px;
   outline: none;
 }
@@ -797,12 +797,13 @@ a {
 
 .modalTitle {
   font-weight: 700;
+  color: white;
 }
 
 .modalSubtitle {
   margin-top: 2px;
   font-size: 13px;
-  color: var(--muted);
+  color: white;
 }
 
 .modalBody {
