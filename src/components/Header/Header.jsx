@@ -16,7 +16,7 @@ export function Header() {
       </div>
 
       <button className="headerUser" type="button" aria-label="Admin account">
-        <span className="headerUserAvatar" aria-hidden="true" />
+        <img className="headerUserAvatar" src="admin-icon.svg" alt="Admin" />
         <span className="headerUserLabel">Admin</span>
       </button>
     </header>

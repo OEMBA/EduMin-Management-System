@@ -71,8 +71,17 @@ a {
   width: 38px;
   height: 38px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary), rgba(34, 211, 238, 0.9));
-  box-shadow: 0 10px 30px rgba(109, 94, 252, 0.25);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+}
+
+.sidebarLogoIcon {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
 }
 
 .sidebarName {
@@ -159,7 +168,8 @@ a {
   width: 30px;
   height: 30px;
   border-radius: 12px;
-  background: rgba(0, 0, 0, 0.12);
+  object-fit: cover;
+  display: block;
 }
 
 .headerUserLabel {

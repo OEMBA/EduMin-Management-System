@@ -8,7 +8,9 @@ export function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebarBrand">
-        <div className="sidebarLogo" aria-hidden="true" />
+        <div className="sidebarLogo">
+          <img className="sidebarLogoIcon" src="graduate-hat.svg" alt="Graduate hat" />
+        </div>
         <div>
           <div className="sidebarName">EduMin</div>
           <div className="sidebarTag">Management System</div>
