@@ -2,8 +2,10 @@ import { useState } from "react"
 import "../styling/addstudent.css"
 
 function AddStudent() {
+    const [showModal, setShowModal] = useState(false)
+
     const generateId = () => {
-        return "STU-" + Math.floor(100000 + Math.random() * 900000)
+        return Math.floor(1000000 + Math.random() * 9000000)
     }
 
     const [formData, setFormData] = useState({
@@ -15,7 +17,11 @@ function AddStudent() {
         phoneNumber: "",
         program: "",
         level: "",
-        studentId: generateId()
+        gender: "",
+        studentId: generateId(),
+        guardianName: "",
+        guardianPhoneNumber: "",
+        relation: ""
     })
 
     const handleChange = (e) => {
@@ -32,7 +38,11 @@ function AddStudent() {
             email: formData.email,
             phoneNumber: formData.phoneNumber,
             program: formData.program,
+            gender: formData.gender,
             level: formData.level,
+            guardianName: formData.guardianName,
+            guardianPhoneNumber: formData.guardianPhoneNumber,
+            relation: formData.relation
         }
 
         const existing = JSON.parse(localStorage.getItem("students")) || []
@@ -46,10 +56,11 @@ function AddStudent() {
         setFormData({
             firstName: "", secondName: "", otherName: "",
             dateOfBirth: "", email: "", phoneNumber: "",
-            program: "", level: "", studentId: newId
+            program: "", level: "", gender: "", studentId: newId,
+            guardianName: "", guardianPhoneNumber: "", relation: "",
         })
 
-        alert("Student added successfully!")
+        setShowModal(true)
     }
 
     return (
@@ -95,7 +106,19 @@ function AddStudent() {
 
                     <div className="input">
                         <label htmlFor="phoneNumber">Phone Number*</label>
-                        <input type="tel" name="phoneNumber" placeholder="0212345667" maxLength={10} minLength={10} pattern="[0-9]{10}" value={formData.phoneNumber} onChange={handleChange} required />
+                        <div className="phone">
+                            <span>+233</span>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="24xxxxxxx" pattern="[0-9]{9}" value={formData.phoneNumber} onChange={handleChange} maxLength={9} required />
+                        </div>
+                    </div>
+
+                    <div className="input">
+                        <label htmlFor="gender">Gender*</label>
+                        <select name="gender" id="gender" value={formData.gender} onChange={handleChange} required>
+                            <option value="" disabled hidden>Choose Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
                     </div>
                 </div>
 
@@ -125,18 +148,51 @@ function AddStudent() {
                                 <label htmlFor="level">Level*</label>
                                 <select name="level" id="level" value={formData.level} onChange={handleChange} required>
                                     <option value="" disabled hidden>Select your level</option>
-                                    <option value="Undergraduate">Undergraduate</option>
-                                    <option value="Graduate">Graduate</option>
+                                    <option value="Level 100">Level 100</option>
+                                    <option value="Level 200">Level 200</option>
+                                    <option value="Level 300">Level 300</option>
+                                    <option value="Level 400">Level 400</option>
                                     <option value="Postgraduate">Postgraduate</option>
                                 </select>
                             </div>
 
                             <div className="input">
                                 <label htmlFor="studentId">Student Id*</label>
-                                <input type="text"
-                                    name="studentId"
-                                    value={formData.studentId}
-                                    readOnly />
+                                <input type="text" name="studentId" value={formData.studentId} readOnly />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="guardian-details">
+                    <div className="guardian-info">
+                        <i className="fa-solid fa-users"></i>
+                        <h5>Guardian Information</h5>
+                    </div>
+
+                    <div className="guardian-inputs">
+                        <div className="inputs">
+                            <div className="input">
+                                <label htmlFor="guardianName">Guardian Name*</label>
+                                <input type="text" name="guardianName" value={formData.guardianName} onChange={handleChange} placeholder="Name of Guardian" required />
+                            </div>
+
+                            <div className="input">
+                                <label htmlFor="guardianContact">Guardian Contact*</label>
+                                <div className="phone">
+                                    <span>+233</span>
+                                    <input type="tel" id="guardianPhoneNumber" name="guardianPhoneNumber" placeholder="24xxxxxxx" pattern="[0-9]{9}" value={formData.guardianPhoneNumber} onChange={handleChange} maxLength={9} required />
+                                </div>
+                            </div>
+
+                            <div className="input">
+                                <label htmlFor="relation">Student Relation*</label>
+                                <select name="relation" id="relation" value={formData.relation} onChange={handleChange} required>
+                                    <option value="" disabled hidden>Relationship to Student</option>
+                                    <option value="father">Father</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="sponsor">Sponsor</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -147,7 +203,8 @@ function AddStudent() {
                     <button type="button" onClick={() => setFormData({
                         firstName: "", secondName: "", otherName: "",
                         dateOfBirth: "", email: "", phoneNumber: "",
-                        program: "", level: "", studentId: ""
+                        program: "", level: "", studentId: "",
+                        guardianName: "", guardianPhoneNumber: "", relation: ""
                     })}>Cancel</button>
                 </div>
             </form>

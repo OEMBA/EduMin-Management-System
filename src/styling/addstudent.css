@@ -60,6 +60,29 @@
     border-radius: 0.5rem;
 }
 
+.phone{
+    display: flex;
+    align-items: center;
+    background-color: #d0d3db;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.phone span{
+    padding: 0.5rem;
+    background-color: #0d1b3e;
+    color: white;
+}
+
+.phone input{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 0.5rem;
+    width: 100%;
+}
+
 .academic-details{
     display: flex;
     flex-direction: column;
@@ -126,6 +149,32 @@ button{
     border: none;
 }
 
+.guardian-details{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.guardian-details .guardian-info{
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.guardian-inputs{
+    width: 100%;
+    height:auto;
+}
+
+.guardian-inputs .inputs{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+}
+
 @media (max-width: 780px){
     .personal-inputs{
         display: grid;
@@ -139,11 +188,13 @@ button{
         grid-template-columns: repeat(1, 1fr);
     }
 
-    .academic-inputs .inputs{
+    .academic-inputs .inputs,
+    .guardian-inputs .inputs{
         flex-direction: column;
     }
 
-    .academic-inputs .inputs .input{
+    .academic-inputs .inputs .input,
+    .guardian-inputs .inputs .input{
         width: 100%;
     }
 }
