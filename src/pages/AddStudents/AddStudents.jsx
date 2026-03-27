@@ -185,6 +185,13 @@ export function AddStudents() {
     navigate('/students/view')
   }
 
+  function handleGoDashboard() {
+    setForm(initialForm)
+    setErrors({})
+    setShowSuccess(false)
+    navigate('/dashboard')
+  }
+
   function onCancel() {
     setForm(initialForm)
     setErrors({})
@@ -463,6 +470,9 @@ export function AddStudents() {
               </button>
               <button className="btnGhost" type="button" onClick={handleViewStudent}>
                 View Students
+              </button>
+              <button className="btnGhost" type="button" onClick={handleGoDashboard}>
+                Dashboard
               </button>
             </div>
           </div>
