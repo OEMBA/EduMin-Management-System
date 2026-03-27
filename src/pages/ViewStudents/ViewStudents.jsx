@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useGlobalSearch } from '../../context/SearchContext.jsx'
-import { getStudentFullName, loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.js'
+import { getStudentFullName, loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.jsx'
 
 function initialsFromStudent(student) {
   const s = normalizeStudent(student)

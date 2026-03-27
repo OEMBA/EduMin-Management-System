@@ -1,25 +1,61 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.js'
+import { loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.jsx'
 
 const REQUIRED_MSG = '*input required*'
+const INVALID_EMAIL = 'incorrect format'
+const INVALID_STRING = 'string input only'
+const INVALID_INTEGER = 'integer values only'
+
+function generateUniqueStudentID(existing) {
+  let id
+  const existingIDs = new Set(existing.map((s) => String(s.studentID)))
+  do {
+    id = String(Math.floor(Math.random() * 90000000) + 10000000)
+  } while (existingIDs.has(id))
+  return id
+}
+
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(email)
+}
+
+function isStringInput(value) {
+  return /^[a-zA-Z\s'-]*$/.test(value)
+}
+
+function isIntegerInput(value) {
+  return /^\d*$/.test(value)
+}
 
 const initialForm = {
   firstName: '',
   secondName: '',
   otherNames: '',
+  gender: '',
   dateOfBirth: '',
   email: '',
   phone: '',
   programOfStudy: '',
   level: '',
   studentID: '',
+  guardianName: '',
+  guardianContact: '',
+  studentRelationship: '',
 }
 
 export function AddStudents() {
   const navigate = useNavigate()
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
+  const [showSuccess, setShowSuccess] = useState(false)
+
+  useEffect(() => {
+    const existing = loadStudents()
+    const newID = generateUniqueStudentID(existing)
+    setForm((prev) => ({ ...prev, studentID: newID }))
+  }, [])
 
   const programOptions = useMemo(
     () => [
@@ -48,7 +84,27 @@ export function AddStudents() {
 
   function onChange(field) {
     return (e) => {
-      setForm((prev) => ({ ...prev, [field]: e.target.value }))
+      let value = e.target.value
+      
+      // Validate string-only fields
+      if (['firstName', 'secondName', 'otherNames', 'guardianName'].includes(field)) {
+        if (value && !isStringInput(value)) {
+          setErrors((prev) => ({ ...prev, [field]: INVALID_STRING }))
+          return
+        }
+        clearError(field)
+      }
+      
+      // Validate integer-only fields
+      if (['phone', 'guardianContact'].includes(field)) {
+        if (value && !isIntegerInput(value)) {
+          setErrors((prev) => ({ ...prev, [field]: INVALID_INTEGER }))
+          return
+        }
+        clearError(field)
+      }
+      
+      setForm((prev) => ({ ...prev, [field]: value }))
       clearError(field)
     }
   }
@@ -67,6 +123,37 @@ export function AddStudents() {
     check('programOfStudy', form.programOfStudy)
     check('level', form.level)
     check('studentID', form.studentID)
+    check('gender', form.gender)
+    check('guardianName', form.guardianName)
+    check('guardianContact', form.guardianContact)
+    check('studentRelationship', form.studentRelationship)
+
+    // Email format validation
+    if (form.email && !isValidEmail(form.email)) {
+      nextErrors.email = INVALID_EMAIL
+    }
+
+    // String validation for name fields
+    if (form.firstName && !isStringInput(form.firstName)) {
+      nextErrors.firstName = INVALID_STRING
+    }
+    if (form.secondName && !isStringInput(form.secondName)) {
+      nextErrors.secondName = INVALID_STRING
+    }
+    if (form.otherNames && !isStringInput(form.otherNames)) {
+      nextErrors.otherNames = INVALID_STRING
+    }
+    if (form.guardianName && !isStringInput(form.guardianName)) {
+      nextErrors.guardianName = INVALID_STRING
+    }
+
+    // Integer validation for phone fields
+    if (form.phone && !isIntegerInput(form.phone)) {
+      nextErrors.phone = INVALID_INTEGER
+    }
+    if (form.guardianContact && !isIntegerInput(form.guardianContact)) {
+      nextErrors.guardianContact = INVALID_INTEGER
+    }
 
     setErrors(nextErrors)
     return Object.keys(nextErrors).length === 0
@@ -81,8 +168,20 @@ export function AddStudents() {
 
     const next = [...existing.filter((s) => String(s.studentID) !== normalized.studentID), normalized]
     saveStudents(next)
+    setShowSuccess(true)
+  }
+
+  function handleAddAnother() {
+    const newID = generateUniqueStudentID(loadStudents())
+    setForm({ ...initialForm, studentID: newID })
+    setErrors({})
+    setShowSuccess(false)
+  }
+
+  function handleViewStudent() {
     setForm(initialForm)
     setErrors({})
+    setShowSuccess(false)
     navigate('/students/view')
   }
 
@@ -191,6 +290,23 @@ export function AddStudents() {
               />
               {errors.phone ? <span className="addFieldError">{errors.phone}</span> : null}
             </label>
+
+            <label className="addField">
+              <span className="addFieldLabel">
+                Gender <span className="addReq">*</span>
+              </span>
+              <select
+                className={`addInput addSelect${errors.gender ? ' addInputError' : ''}`}
+                value={form.gender}
+                onChange={onChange('gender')}
+              >
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              {errors.gender ? <span className="addFieldError">{errors.gender}</span> : null}
+            </label>
           </div>
 
           <h2 className="addSectionTitleAcademic">
@@ -251,11 +367,68 @@ export function AddStudents() {
               <input
                 className={`addInput${errors.studentID ? ' addInputError' : ''}`}
                 value={form.studentID}
-                onChange={onChange('studentID')}
-                placeholder="Enter your ID"
+                readOnly
+                placeholder="Auto-generated"
                 autoComplete="off"
               />
               {errors.studentID ? <span className="addFieldError">{errors.studentID}</span> : null}
+            </label>
+          </div>
+
+          <h2 className="addSectionHeaderBar">
+            <span className="addSectionHeaderIcon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 5h16v14H4V5zm2 2v10h12V7H6zm2 2h8v1.5H8V9zm0 3h6v1.5H8V12z" fill="currentColor" />
+              </svg>
+            </span>
+            Guardian Details
+          </h2>
+
+          <div className="addFormGrid3">
+            <label className="addField">
+              <span className="addFieldLabel">
+                Guardian Name <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.guardianName ? ' addInputError' : ''}`}
+                value={form.guardianName}
+                onChange={onChange('guardianName')}
+                placeholder="Guardian Full Name"
+                autoComplete="name"
+              />
+              {errors.guardianName ? <span className="addFieldError">{errors.guardianName}</span> : null}
+            </label>
+
+            <label className="addField">
+              <span className="addFieldLabel">
+                Guardian Contact <span className="addReq">*</span>
+              </span>
+              <input
+                className={`addInput${errors.guardianContact ? ' addInputError' : ''}`}
+                type="tel"
+                value={form.guardianContact}
+                onChange={onChange('guardianContact')}
+                placeholder="Guardian Phone"
+                autoComplete="tel"
+              />
+              {errors.guardianContact ? <span className="addFieldError">{errors.guardianContact}</span> : null}
+            </label>
+
+            <label className="addField">
+              <span className="addFieldLabel">
+                Student Relationship <span className="addReq">*</span>
+              </span>
+              <select
+                className={`addInput addSelect${errors.studentRelationship ? ' addInputError' : ''}`}
+                value={form.studentRelationship}
+                onChange={onChange('studentRelationship')}
+              >
+                <option value="">Select relationship</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Sponsor">Sponsor</option>
+              </select>
+              {errors.studentRelationship ? <span className="addFieldError">{errors.studentRelationship}</span> : null}
             </label>
           </div>
 
@@ -269,6 +442,32 @@ export function AddStudents() {
           </div>
         </form>
       </div>
+
+      {showSuccess && (
+        <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="Student added successfully">
+          <div className="modal">
+            <div className="modalHeader">
+              <div>
+                <div className="modalTitle">Success!</div>
+                <div className="modalSubtitle">Student record added successfully</div>
+              </div>
+            </div>
+
+            <div className="modalBody">
+              <p>The student with ID <strong>{form.studentID}</strong> has been added to the database.</p>
+            </div>
+
+            <div className="modalActions">
+              <button className="btnPrimary" type="button" onClick={handleAddAnother}>
+                Add Another Student
+              </button>
+              <button className="btnGhost" type="button" onClick={handleViewStudent}>
+                View Students
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }

@@ -21,11 +21,15 @@ export function normalizeStudent(student) {
     firstName: String(student?.firstName ?? '').trim(),
     otherNames: String(student?.otherNames ?? student?.otherName ?? '').trim(),
     secondName: String(student?.secondName ?? student?.lastName ?? '').trim(),
+    gender: String(student?.gender ?? '').trim(),
     dateOfBirth: String(student?.dateOfBirth ?? '').trim(),
     email: String(student?.email ?? '').trim(),
     phone: String(student?.phone ?? '').trim(),
     level: String(student?.level ?? '').trim(),
     programOfStudy: String(student?.programOfStudy ?? student?.program ?? '').trim(),
+    guardianName: String(student?.guardianName ?? '').trim(),
+    guardianContact: String(student?.guardianContact ?? '').trim(),
+    studentRelationship: String(student?.studentRelationship ?? '').trim(),
   }
 }
 
