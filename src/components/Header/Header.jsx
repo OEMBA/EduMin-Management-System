@@ -2,6 +2,7 @@ import { useGlobalSearch } from '../../context/SearchContext.jsx'
 import { useLocation } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { useNotifications } from '../../context/NotificationsContext.jsx'
+import { useInstitution } from '../../context/InstitutionContext.jsx'
 
 function formatDateTime(dateValue) {
   const value = new Date(dateValue)
@@ -17,8 +18,15 @@ export function Header() {
   const { query, setQuery } = useGlobalSearch()
   const isAddStudentsPage = location.pathname === '/students/add'
   const { notifications, unreadCount, markAllRead, syncEventReminders } = useNotifications()
+  const { institution } = useInstitution()
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
   const notificationsRef = useRef(null)
+  const profileRef = useRef(null)
+
+  const profileTitle = institution.institutionName || 'Institution not set'
+  const profileAddress = institution.address || 'Address not provided'
+  const adminName = institution.adminName || 'Admin not set'
 
   useEffect(() => {
     if (!isNotificationsOpen) return
@@ -33,14 +41,34 @@ export function Header() {
     return () => document.removeEventListener('mousedown', onDocumentClick)
   }, [isNotificationsOpen])
 
+  useEffect(() => {
+    if (!isProfileOpen) return
+
+    function onDocumentClick(event) {
+      if (!profileRef.current?.contains(event.target)) {
+        setIsProfileOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', onDocumentClick)
+    return () => document.removeEventListener('mousedown', onDocumentClick)
+  }, [isProfileOpen])
+
   function toggleNotifications() {
     const nextState = !isNotificationsOpen
     setIsNotificationsOpen(nextState)
+    if (nextState) setIsProfileOpen(false)
 
     if (nextState) {
       syncEventReminders()
       markAllRead()
     }
+  }
+
+  function toggleProfile() {
+    const nextState = !isProfileOpen
+    setIsProfileOpen(nextState)
+    if (nextState) setIsNotificationsOpen(false)
   }
 
   return (
@@ -100,10 +128,35 @@ export function Header() {
           ) : null}
         </div>
 
-        <button className="headerUser" type="button" aria-label="Admin account">
-          <img className="headerUserAvatar" src="/admin-icon.svg" alt="Admin" />
-          <span className="headerUserLabel">Admin</span>
-        </button>
+        <div className="headerProfileWrap" ref={profileRef}>
+          <button
+            className="headerUser"
+            type="button"
+            aria-label="Admin account"
+            aria-expanded={isProfileOpen}
+            onClick={toggleProfile}
+          >
+            <img className="headerUserAvatar" src="/admin-icon.svg" alt="Admin" />
+            <span className="headerUserLabel">{adminName}</span>
+          </button>
+
+          {isProfileOpen ? (
+            <div className="headerProfileDropdown" role="menu" aria-label="Institution profile">
+              <div className="headerProfileLine">
+                <span className="headerProfileKey">Institution</span>
+                <span className="headerProfileValue">{profileTitle}</span>
+              </div>
+              <div className="headerProfileLine">
+                <span className="headerProfileKey">Address</span>
+                <span className="headerProfileValue">{profileAddress}</span>
+              </div>
+              <div className="headerProfileLine">
+                <span className="headerProfileKey">Administrator</span>
+                <span className="headerProfileValue">{adminName}</span>
+              </div>
+            </div>
+          ) : null}
+        </div>
       </div>
     </header>
   )
