@@ -1,19 +1,30 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { loadStudents, normalizeStudent, saveStudents } from '../../lib/studentsStorage.jsx'
+import { useNotifications } from '../../context/NotificationsContext.jsx'
 
 const REQUIRED_MSG = '*input required*'
 const INVALID_EMAIL = 'incorrect format'
 const INVALID_STRING = 'string input only'
 const INVALID_INTEGER = 'integer values only'
+const INVALID_GHANA_PHONE = 'must be in format +233XXXXXXXXX'
 
 function generateUniqueStudentID(existing) {
-  let id
-  const existingIDs = new Set(existing.map((s) => String(s.studentID)))
-  do {
-    id = String(Math.floor(Math.random() * 90000000) + 10000000)
-  } while (existingIDs.has(id))
-  return id
+  const yearPrefix = String(new Date().getFullYear())
+  const existingIDs = new Set(existing.map((s) => String(s.studentID ?? '').trim()))
+
+  let maxSequence = 0
+  for (const id of existingIDs) {
+    if (/^\d{8}$/.test(id) && id.startsWith(yearPrefix)) {
+      const seq = Number(id.slice(4))
+      if (!Number.isNaN(seq)) {
+        maxSequence = Math.max(maxSequence, seq)
+      }
+    }
+  }
+
+  const nextSequence = maxSequence + 1
+  return `${yearPrefix}${String(nextSequence).padStart(4, '0')}`
 }
 
 function isValidEmail(email) {
@@ -27,6 +38,25 @@ function isStringInput(value) {
 
 function isIntegerInput(value) {
   return /^\d*$/.test(value)
+}
+
+function normalizeGhanaPhoneInput(value) {
+  const digits = String(value ?? '').replace(/\D/g, '')
+  if (!digits) return ''
+
+  let localPart = digits
+  if (localPart.startsWith('233')) {
+    localPart = localPart.slice(3)
+  } else if (localPart.startsWith('0')) {
+    localPart = localPart.slice(1)
+  }
+
+  localPart = localPart.slice(0, 9)
+  return `+233${localPart}`
+}
+
+function isValidGhanaPhone(value) {
+  return /^\+233\d{9}$/.test(String(value ?? '').trim())
 }
 
 const initialForm = {
@@ -47,6 +77,7 @@ const initialForm = {
 
 export function AddStudents() {
   const navigate = useNavigate()
+  const { addNotification } = useNotifications()
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [showSuccess, setShowSuccess] = useState(false)
@@ -85,7 +116,7 @@ export function AddStudents() {
   function onChange(field) {
     return (e) => {
       let value = e.target.value
-      
+
       // Validate string-only fields
       if (['firstName', 'secondName', 'otherNames', 'guardianName'].includes(field)) {
         if (value && !isStringInput(value)) {
@@ -94,16 +125,23 @@ export function AddStudents() {
         }
         clearError(field)
       }
-      
+
+      if (field === 'phone') {
+        value = normalizeGhanaPhoneInput(value)
+        setForm((prev) => ({ ...prev, [field]: value }))
+        clearError(field)
+        return
+      }
+
       // Validate integer-only fields
-      if (['phone', 'guardianContact'].includes(field)) {
+      if (['guardianContact'].includes(field)) {
         if (value && !isIntegerInput(value)) {
           setErrors((prev) => ({ ...prev, [field]: INVALID_INTEGER }))
           return
         }
         clearError(field)
       }
-      
+
       setForm((prev) => ({ ...prev, [field]: value }))
       clearError(field)
     }
@@ -148,8 +186,8 @@ export function AddStudents() {
     }
 
     // Integer validation for phone fields
-    if (form.phone && !isIntegerInput(form.phone)) {
-      nextErrors.phone = INVALID_INTEGER
+    if (form.phone && !isValidGhanaPhone(form.phone)) {
+      nextErrors.phone = INVALID_GHANA_PHONE
     }
     if (form.guardianContact && !isIntegerInput(form.guardianContact)) {
       nextErrors.guardianContact = INVALID_INTEGER
@@ -168,6 +206,15 @@ export function AddStudents() {
 
     const next = [...existing.filter((s) => String(s.studentID) !== normalized.studentID), normalized]
     saveStudents(next)
+
+    const fullName = [normalized.firstName, normalized.otherNames, normalized.secondName].filter(Boolean).join(' ') || 'Unnamed Student'
+    addNotification({
+      type: 'student-added',
+      title: 'Student Added',
+      message: `${fullName} was added to the system.`,
+      details: `ID: ${normalized.studentID} | Program: ${normalized.programOfStudy || 'N/A'} | Level: ${normalized.level || 'N/A'}`,
+    })
+
     setShowSuccess(true)
   }
 
@@ -176,13 +223,6 @@ export function AddStudents() {
     setForm({ ...initialForm, studentID: newID })
     setErrors({})
     setShowSuccess(false)
-  }
-
-  function handleViewStudent() {
-    setForm(initialForm)
-    setErrors({})
-    setShowSuccess(false)
-    navigate('/students/view')
   }
 
   function handleGoDashboard() {
@@ -292,7 +332,7 @@ export function AddStudents() {
                 type="tel"
                 value={form.phone}
                 onChange={onChange('phone')}
-                placeholder="+233"
+                placeholder="+233XXXXXXXXX"
                 autoComplete="tel"
               />
               {errors.phone ? <span className="addFieldError">{errors.phone}</span> : null}
@@ -468,11 +508,8 @@ export function AddStudents() {
               <button className="btnPrimary" type="button" onClick={handleAddAnother}>
                 Add Another Student
               </button>
-              <button className="btnGhost" type="button" onClick={handleViewStudent}>
-                View Students
-              </button>
               <button className="btnGhost" type="button" onClick={handleGoDashboard}>
-                Dashboard
+                Go to Dashboard
               </button>
             </div>
           </div>

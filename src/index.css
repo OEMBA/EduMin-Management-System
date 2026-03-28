@@ -102,6 +102,59 @@ a {
   padding: 6px 8px;
 }
 
+.sidebarThemeWrap {
+  margin-top: 18px;
+  padding: 10px 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.sidebarThemeLabel {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 8px;
+}
+
+.themeToggle {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.themeToggleText {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.themeToggleTrack {
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2px;
+  display: inline-flex;
+}
+
+.themeToggleThumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateX(0);
+  transition: transform 180ms ease;
+}
+
+.themeToggle.isDark .themeToggleThumb {
+  transform: translateX(20px);
+}
+
 .sidebarLink {
   padding: 10px 12px;
   border-radius: 12px;
@@ -133,9 +186,144 @@ a {
   z-index: 20;
 }
 
+.headerNoSearch {
+  justify-content: flex-end;
+}
+
 .headerSearch {
   flex: 1;
   max-width: 640px;
+}
+
+.headerRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerBellWrap {
+  position: relative;
+}
+
+.headerBellBtn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.75);
+  color: rgba(12, 18, 32, 0.85);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.headerBellBtn:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.headerBellBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  padding: 0 5px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerNotifDropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: min(420px, calc(100vw - 40px));
+  max-height: 430px;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 20px 46px rgba(12, 18, 32, 0.22);
+  overflow: hidden;
+  z-index: 60;
+}
+
+.headerNotifHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.headerNotifTitle {
+  font-size: 14px;
+  font-weight: 800;
+  color: rgba(12, 18, 32, 0.9);
+}
+
+.headerNotifCount {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(12, 18, 32, 0.72);
+  background: rgba(12, 18, 32, 0.05);
+}
+
+.headerNotifList {
+  max-height: 360px;
+  overflow: auto;
+}
+
+.headerNotifItem {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.headerNotifItem.isUnread {
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.headerNotifItemTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(12, 18, 32, 0.9);
+}
+
+.headerNotifItemMsg {
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(12, 18, 32, 0.78);
+}
+
+.headerNotifItemDetails {
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(12, 18, 32, 0.62);
+}
+
+.headerNotifItemTime {
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(12, 18, 32, 0.58);
+}
+
+.headerNotifEmpty {
+  padding: 14px;
+  font-size: 13px;
+  color: rgba(12, 18, 32, 0.62);
 }
 
 .headerSearchInput {
@@ -343,6 +531,18 @@ a {
   background: rgba(255, 255, 255, 1);
 }
 
+.vsEditBtn {
+  color: #166534;
+  border-color: rgba(22, 101, 52, 0.35);
+  background: rgba(22, 163, 74, 0.16);
+}
+
+.vsDeleteBtn {
+  color: #b91c1c;
+  border-color: rgba(185, 28, 28, 0.4);
+  background: rgba(239, 68, 68, 0.18);
+}
+
 .vsEmpty {
   padding: 18px 14px 10px;
   color: rgba(12, 18, 32, 0.6);
@@ -525,6 +725,18 @@ a {
 .btnDanger {
   background: rgba(241, 7, 7, 0.16);
   border-color: rgba(239, 68, 68, 0.35);
+}
+
+.btnEditAction {
+  background: linear-gradient(180deg, #15803d, #166534);
+  border-color: rgba(22, 101, 52, 0.45);
+  color: #f0fdf4;
+}
+
+.btnRemoveAction {
+  background: linear-gradient(180deg, #dc2626, #991b1b);
+  border-color: rgba(127, 29, 29, 0.55);
+  color: #fef2f2;
 }
 
 .iconBtn {
@@ -1066,4 +1278,275 @@ a {
   .vsRow {
     grid-template-columns: 1fr 1.4fr 1fr 1.2fr 0.8fr;
   }
+}
+
+[data-theme='dark'] body {
+  background: linear-gradient(180deg, #00132d, #00193b);
+  color: rgba(226, 236, 255, 0.92);
+}
+
+[data-theme='dark'] .appMain {
+  background: linear-gradient(180deg, #00132d, #00193b);
+}
+
+[data-theme='dark'] .appContent {
+  background: transparent;
+}
+
+[data-theme='dark'] .sidebar {
+  background: linear-gradient(180deg, #001e45, #002657);
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark'] .sidebarLogo {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme='dark'] .sidebarLink {
+  color: rgba(226, 236, 255, 0.9);
+}
+
+[data-theme='dark'] .sidebarLink:hover {
+  background: rgba(0, 55, 126, 0.55);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+[data-theme='dark'] .sidebarLink.isActive {
+  background: rgba(0, 55, 126, 0.75);
+  border-color: rgba(0, 45, 103, 0.95);
+}
+
+[data-theme='dark'] .themeToggle {
+  background: rgba(0, 55, 126, 0.32);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .themeToggleTrack {
+  background: rgba(0, 30, 69, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .themeToggleThumb {
+  background: #00377e;
+}
+
+[data-theme='dark'] .header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 30, 69, 0.82);
+}
+
+[data-theme='dark'] .headerSearchInput {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(0, 37, 87, 0.9);
+  color: rgba(235, 243, 255, 0.95);
+}
+
+[data-theme='dark'] .headerSearchInput::placeholder {
+  color: rgba(226, 236, 255, 0.6);
+}
+
+[data-theme='dark'] .headerBellBtn,
+[data-theme='dark'] .headerUser {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(0, 37, 87, 0.9);
+  color: rgba(235, 243, 255, 0.95);
+}
+
+[data-theme='dark'] .headerNotifDropdown {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(0, 30, 69, 0.98);
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme='dark'] .headerNotifHeader {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .headerNotifTitle,
+[data-theme='dark'] .headerNotifItemTitle {
+  color: rgba(230, 240, 255, 0.95);
+}
+
+[data-theme='dark'] .headerNotifCount {
+  border-color: rgba(255, 255, 255, 0.16);
+  color: rgba(230, 240, 255, 0.86);
+  background: rgba(0, 55, 126, 0.5);
+}
+
+[data-theme='dark'] .headerNotifItem {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme='dark'] .headerNotifItem.isUnread {
+  background: rgba(0, 55, 126, 0.32);
+}
+
+[data-theme='dark'] .headerNotifItemMsg {
+  color: rgba(226, 236, 255, 0.86);
+}
+
+[data-theme='dark'] .headerNotifItemDetails,
+[data-theme='dark'] .headerNotifItemTime,
+[data-theme='dark'] .headerNotifEmpty {
+  color: rgba(196, 215, 245, 0.78);
+}
+
+[data-theme='dark'] .pageTitle,
+[data-theme='dark'] .addStudentMainTitle {
+  color: rgba(235, 243, 255, 0.95);
+}
+
+[data-theme='dark'] .pageDescription {
+  color: rgba(196, 215, 245, 0.78);
+}
+
+[data-theme='dark'] .addStudentMainSubtitle {
+  color: rgba(163, 195, 243, 0.95);
+}
+
+[data-theme='dark'] .vsTableCard,
+[data-theme='dark'] .addStudentCard {
+  background: rgba(0, 30, 69, 0.72);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark'] .vsTableHeader {
+  background: rgba(0, 45, 103, 0.72);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(210, 226, 250, 0.88);
+}
+
+[data-theme='dark'] .vsRow {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.11);
+}
+
+[data-theme='dark'] .vsCell,
+[data-theme='dark'] .vsName,
+[data-theme='dark'] .vsEmpty {
+  color: rgba(226, 236, 255, 0.9);
+}
+
+[data-theme='dark'] .vsAvatar {
+  color: rgba(226, 236, 255, 0.95);
+  border-color: rgba(123, 176, 255, 0.42);
+  background: rgba(0, 55, 126, 0.55);
+}
+
+[data-theme='dark'] .vsLevelPill {
+  color: rgba(225, 238, 255, 0.95);
+  border-color: rgba(123, 176, 255, 0.4);
+  background: rgba(0, 55, 126, 0.55);
+}
+
+[data-theme='dark'] .vsIconBtn,
+[data-theme='dark'] .vsPageBtn,
+[data-theme='dark'] .vsPageNum {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(0, 45, 103, 0.72);
+  color: rgba(230, 240, 255, 0.92);
+}
+
+[data-theme='dark'] .vsEditBtn {
+  color: #bbf7d0;
+  border-color: rgba(134, 239, 172, 0.5);
+  background: rgba(22, 163, 74, 0.35);
+}
+
+[data-theme='dark'] .vsDeleteBtn {
+  color: #fecaca;
+  border-color: rgba(252, 165, 165, 0.55);
+  background: rgba(220, 38, 38, 0.4);
+}
+
+[data-theme='dark'] .vsPageNum.isActive {
+  background: #00377e;
+  border-color: #002d67;
+}
+
+[data-theme='dark'] .vsRange {
+  color: rgba(183, 212, 255, 0.95);
+}
+
+[data-theme='dark'] .dashHero,
+[data-theme='dark'] .dashPanelNavy,
+[data-theme='dark'] .addSectionHeaderBar,
+[data-theme='dark'] .modal {
+  background: linear-gradient(180deg, #001e45, #002657);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark'] .addSectionTitleAcademic,
+[data-theme='dark'] .addFieldLabel,
+[data-theme='dark'] .modalTitle,
+[data-theme='dark'] .modalSubtitle,
+[data-theme='dark'] .dangerText {
+  color: rgba(226, 236, 255, 0.95);
+}
+
+[data-theme='dark'] .addInput,
+[data-theme='dark'] .addSelect,
+[data-theme='dark'] .input {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 45, 103, 0.72);
+  color: rgba(235, 243, 255, 0.95);
+}
+
+[data-theme='dark'] .addInput::placeholder,
+[data-theme='dark'] .input::placeholder {
+  color: rgba(226, 236, 255, 0.6);
+}
+
+[data-theme='dark'] .addBtnSubmit,
+[data-theme='dark'] .addBtnCancel,
+[data-theme='dark'] .btnPrimary {
+  background: linear-gradient(180deg, #00377e, #002d67);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: rgba(238, 245, 255, 0.95);
+}
+
+[data-theme='dark'] .btnEditAction {
+  background: linear-gradient(180deg, #15803d, #14532d);
+  border-color: rgba(134, 239, 172, 0.4);
+  color: #f0fdf4;
+}
+
+[data-theme='dark'] .btnRemoveAction {
+  background: linear-gradient(180deg, #dc2626, #7f1d1d);
+  border-color: rgba(252, 165, 165, 0.45);
+  color: #fee2e2;
+}
+
+[data-theme='dark'] .btnGhost,
+[data-theme='dark'] .btnDanger,
+[data-theme='dark'] .iconBtn,
+[data-theme='dark'] .btnSmall,
+[data-theme='dark'] .btnSmallDanger {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(0, 45, 103, 0.52);
+  color: rgba(238, 245, 255, 0.95);
+}
+
+[data-theme='dark'] .admitRow,
+[data-theme='dark'] .eventRow {
+  background: rgba(0, 55, 126, 0.3);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark'] .dateBox {
+  background: rgba(235, 243, 255, 0.95);
+  color: #00132d;
+}
+
+[data-theme='dark'] .eventSub,
+[data-theme='dark'] .admitMeta,
+[data-theme='dark'] .dashHeroTop,
+[data-theme='dark'] .dashHeroSub,
+[data-theme='dark'] .dashLink {
+  color: rgba(196, 215, 245, 0.82);
+}
+
+[data-theme='dark'] .dashAddEvent {
+  border-color: rgba(183, 212, 255, 0.55);
+  color: rgba(230, 240, 255, 0.95);
+  background: rgba(0, 45, 103, 0.35);
 }

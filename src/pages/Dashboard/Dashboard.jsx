@@ -1,13 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import { getStudentFullName, loadStudents } from '../../lib/studentsStorage.jsx'
+import { useNotifications } from '../../context/NotificationsContext.jsx'
 
-const EVENT_STORAGE_KEY = 'upcomingEvents'
+const EVENT_STORAGE_KEY = 'events'
+const LEGACY_EVENT_STORAGE_KEY = 'upcomingEvents'
 
 function loadEvents() {
   try {
     const raw = localStorage.getItem(EVENT_STORAGE_KEY)
-    if (!raw) return []
-    const parsed = JSON.parse(raw)
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      return Array.isArray(parsed) ? parsed : []
+    }
+
+    const legacyRaw = localStorage.getItem(LEGACY_EVENT_STORAGE_KEY)
+    if (!legacyRaw) return []
+    const parsed = JSON.parse(legacyRaw)
     return Array.isArray(parsed) ? parsed : []
   } catch {
     return []
@@ -38,23 +46,20 @@ function dayNumber(dateString) {
 }
 
 export function Dashboard() {
-  const [students, setStudents] = useState([])
-  const [events, setEvents] = useState([])
+  const { addNotification, syncEventReminders, removeEventNotifications } = useNotifications()
+  const [students, setStudents] = useState(() => loadStudents())
+  const [events, setEvents] = useState(() => loadEvents())
   const [isAddingEvent, setIsAddingEvent] = useState(false)
   const [eventForm, setEventForm] = useState({ title: '', date: '', time: '', location: '' })
   const [eventErrors, setEventErrors] = useState({})
 
   useEffect(() => {
-    setStudents(loadStudents())
-    setEvents(loadEvents())
-  }, [])
-
-  useEffect(() => {
     saveEvents(events)
-  }, [events])
+    syncEventReminders()
+  }, [events, syncEventReminders])
 
   const totalStudents = students.length
-  const recentlyAdmitted = useMemo(() => [...students].reverse(), [students])
+  const recentlyAdmitted = useMemo(() => students.slice(-5).reverse(), [students])
   const upcomingEvents = useMemo(() => {
     const future = events
       .map((e) => ({ ...e, dateValue: new Date(e.date).getTime() }))
@@ -86,24 +91,44 @@ export function Dashboard() {
   function handleAddEvent(e) {
     e.preventDefault()
     if (!validateEvent()) return
+
+    const nextEvent = {
+      id: `evt_${Date.now()}`,
+      title: eventForm.title.trim(),
+      date: eventForm.date,
+      time: eventForm.time,
+      location: eventForm.location.trim(),
+    }
+
     const next = [
       ...events,
-      {
-        id: `evt_${Date.now()}`,
-        title: eventForm.title.trim(),
-        date: eventForm.date,
-        time: eventForm.time,
-        location: eventForm.location.trim(),
-      },
+      nextEvent,
     ]
     setEvents(next)
+    addNotification({
+      type: 'event-added',
+      title: 'Event Added',
+      message: `${nextEvent.title} has been scheduled.`,
+      eventId: nextEvent.id,
+      details: `Location: ${nextEvent.location} | Date: ${nextEvent.date} | Time: ${nextEvent.time}`,
+    })
     setEventForm({ title: '', date: '', time: '', location: '' })
     setEventErrors({})
     setIsAddingEvent(false)
   }
 
-  function handleRemoveEvent(id) {
-    setEvents((prev) => prev.filter((e) => e.id !== id))
+  function handleRemoveEvent(eventToRemove) {
+    if (!eventToRemove) return
+
+    setEvents((prev) => prev.filter((e) => e.id !== eventToRemove.id))
+    removeEventNotifications(eventToRemove.id)
+    addNotification({
+      type: 'event-removed',
+      title: 'Event Removed',
+      message: `${eventToRemove.title} has been removed.`,
+      eventId: eventToRemove.id,
+      details: `Location: ${eventToRemove.location} | Date: ${eventToRemove.date} | Time: ${eventToRemove.time}`,
+    })
   }
 
   return (
@@ -149,7 +174,7 @@ export function Dashboard() {
                           {student.level || 'Unknown Level'} • {student.programOfStudy || 'Unknown program'}
                         </div>
                       </div>
-                      <div className="pill pillVerified">Verified</div>
+                      <div className="pill pillPending">Newly Admitted</div>
                     </div>
                   )
                 })
@@ -163,7 +188,7 @@ export function Dashboard() {
             </div>
             <div className="events">
               {upcomingEvents.length === 0 ? (
-                <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px' }}>No upcoming events added yet.</div>
+                <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px' }}>No upcoming events.</div>
               ) : (
                 upcomingEvents.map((event) => (
                   <div className="eventRow" key={event.id}>
@@ -176,10 +201,10 @@ export function Dashboard() {
                       <div className="eventSub">{event.time} • {event.location}</div>
                     </div>
                     <button
-                      className="btnGhost"
+                      className="btnGhost btnRemoveAction"
                       type="button"
-                      onClick={() => handleRemoveEvent(event.id)}
-                      style={{ marginLeft: 'auto', borderColor: 'rgba(239,68,68,0.4)', color: 'rgba(255,255,255,0.85)' }}
+                      onClick={() => handleRemoveEvent(event)}
+                      style={{ marginLeft: 'auto' }}
                     >
                       Remove
                     </button>
@@ -191,7 +216,7 @@ export function Dashboard() {
                 <form className="form" onSubmit={handleAddEvent}>
                   <div className="formGrid">
                     <label className="field">
-                      <span className="fieldLabel">Event Name</span>
+                      <span className="fieldLabel">Event Title</span>
                       <input
                         className="input"
                         value={eventForm.title}
