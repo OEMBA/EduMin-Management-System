@@ -109,8 +109,8 @@ src/
 ### Installation
 
 ```bash
-git clone https://github.com/OEMBA/school-management-system.git
-cd school-management-system
+git clone https://github.com/OEMBA/EduMin-Management-System.git
+cd EduMin-Management-System
 npm install
 ```
 
