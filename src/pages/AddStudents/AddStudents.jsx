@@ -6,7 +6,6 @@ import { useNotifications } from '../../context/NotificationsContext.jsx'
 const REQUIRED_MSG = '*input required*'
 const INVALID_EMAIL = 'incorrect format'
 const INVALID_STRING = 'string input only'
-const INVALID_INTEGER = 'integer values only'
 const INVALID_GHANA_PHONE = 'must be in format +233XXXXXXXXX'
 
 function generateUniqueStudentID(existing) {
@@ -34,10 +33,6 @@ function isValidEmail(email) {
 
 function isStringInput(value) {
   return /^[a-zA-Z\s'-]*$/.test(value)
-}
-
-function isIntegerInput(value) {
-  return /^\d*$/.test(value)
 }
 
 function normalizeGhanaPhoneInput(value) {
@@ -133,13 +128,11 @@ export function AddStudents() {
         return
       }
 
-      // Validate integer-only fields
-      if (['guardianContact'].includes(field)) {
-        if (value && !isIntegerInput(value)) {
-          setErrors((prev) => ({ ...prev, [field]: INVALID_INTEGER }))
-          return
-        }
+      if (field === 'guardianContact') {
+        value = normalizeGhanaPhoneInput(value)
+        setForm((prev) => ({ ...prev, [field]: value }))
         clearError(field)
+        return
       }
 
       setForm((prev) => ({ ...prev, [field]: value }))
@@ -185,12 +178,12 @@ export function AddStudents() {
       nextErrors.guardianName = INVALID_STRING
     }
 
-    // Integer validation for phone fields
+    // Phone validation for student and guardian contacts
     if (form.phone && !isValidGhanaPhone(form.phone)) {
       nextErrors.phone = INVALID_GHANA_PHONE
     }
-    if (form.guardianContact && !isIntegerInput(form.guardianContact)) {
-      nextErrors.guardianContact = INVALID_INTEGER
+    if (form.guardianContact && !isValidGhanaPhone(form.guardianContact)) {
+      nextErrors.guardianContact = INVALID_GHANA_PHONE
     }
 
     setErrors(nextErrors)
@@ -455,7 +448,7 @@ export function AddStudents() {
                 type="tel"
                 value={form.guardianContact}
                 onChange={onChange('guardianContact')}
-                placeholder="Guardian Phone"
+                placeholder="+233XXXXXXXXX"
                 autoComplete="tel"
               />
               {errors.guardianContact ? <span className="addFieldError">{errors.guardianContact}</span> : null}

@@ -13,7 +13,7 @@ function formatDateTime(dateValue) {
   })
 }
 
-export function Header() {
+export function Header({ onMenuClick, isSidebarOpen = false }) {
   const location = useLocation()
   const { query, setQuery } = useGlobalSearch()
   const isAddStudentsPage = location.pathname === '/students/add'
@@ -73,17 +73,33 @@ export function Header() {
 
   return (
     <header className={`header${isAddStudentsPage ? ' headerNoSearch' : ''}`}>
-      {!isAddStudentsPage ? (
-        <div className="headerSearch">
-          <input
-            className="headerSearchInput"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search students, classes, or reports..."
-            aria-label="Search"
-          />
-        </div>
-      ) : null}
+      <div className="headerStart">
+        <button
+          className="headerMenuBtn"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded={isSidebarOpen}
+          onClick={onMenuClick}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 6h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <path d="M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+
+        {!isAddStudentsPage ? (
+          <div className="headerSearch">
+            <input
+              className="headerSearchInput"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search students, classes, or reports..."
+              aria-label="Search"
+            />
+          </div>
+        ) : null}
+      </div>
 
       <div className="headerRight">
         <div className="headerBellWrap" ref={notificationsRef}>
