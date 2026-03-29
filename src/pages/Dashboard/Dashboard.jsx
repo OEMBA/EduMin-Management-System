@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { getStudentFullName, loadStudents } from '../../lib/studentsStorage.jsx'
 import { useNotifications } from '../../context/NotificationsContext.jsx'
 
@@ -46,12 +47,14 @@ function dayNumber(dateString) {
 }
 
 export function Dashboard() {
+  const navigate = useNavigate()
   const { addNotification, syncEventReminders, removeEventNotifications } = useNotifications()
-  const [students, setStudents] = useState(() => loadStudents())
+  const [students] = useState(() => loadStudents())
   const [events, setEvents] = useState(() => loadEvents())
   const [isAddingEvent, setIsAddingEvent] = useState(false)
   const [eventForm, setEventForm] = useState({ title: '', date: '', time: '', location: '' })
   const [eventErrors, setEventErrors] = useState({})
+  const [now] = useState(() => Date.now())
 
   useEffect(() => {
     saveEvents(events)
@@ -63,15 +66,15 @@ export function Dashboard() {
   const upcomingEvents = useMemo(() => {
     const future = events
       .map((e) => ({ ...e, dateValue: new Date(e.date).getTime() }))
-      .filter((e) => !Number.isNaN(e.dateValue) && e.dateValue >= Date.now())
+      .filter((e) => !Number.isNaN(e.dateValue) && e.dateValue >= now)
       .sort((a, b) => a.dateValue - b.dateValue)
 
     if (future.length) return future
     return events
       .map((e) => ({ ...e, dateValue: new Date(e.date).getTime() }))
-      .filter((e) => Number.isNaN(e.dateValue) || e.dateValue < Date.now())
+      .filter((e) => Number.isNaN(e.dateValue) || e.dateValue < now)
       .sort((a, b) => a.dateValue - b.dateValue)
-  }, [events])
+  }, [events, now])
 
   function setField(field, value) {
     setEventForm((prev) => ({ ...prev, [field]: value }))
@@ -140,7 +143,22 @@ export function Dashboard() {
         </div>
       </div>
 
-      <div className="dashGrid">
+      {students.length === 0 ? (
+        <div className="emptyStateContainer">
+          <div className="emptyStateCard">
+            <h2 className="emptyStateTitle">No Students Yet</h2>
+            <p className="emptyStateDescription">Your student database is currently empty. Start by adding your first student to get started.</p>
+            <button
+              className="btnPrimary"
+              onClick={() => navigate('/students/add')}
+              style={{ marginTop: '1.5rem' }}
+            >
+              Add First Student
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="dashGrid">
         <div className="dashHero">
           <div className="dashHeroTop">Academic Year Overview</div>
           <div className="dashHeroRow">
@@ -163,10 +181,10 @@ export function Dashboard() {
               {recentlyAdmitted.length === 0 ? (
                 <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px' }}>No admitted students yet.</div>
               ) : (
-                recentlyAdmitted.map((student) => {
+                recentlyAdmitted.map((student, index) => {
                   const name = getStudentFullName(student) || 'Unnamed Student'
                   return (
-                    <div className="admitRow" key={student.studentID || name + Math.random()}>
+                    <div className="admitRow" key={student.studentID || `student-${index}`}>
                       <div className="avatarCircle">{initialsFromStudent(student)}</div>
                       <div>
                         <div className="admitName">{name}</div>
@@ -275,6 +293,7 @@ export function Dashboard() {
           </section>
         </div>
       </div>
+      )}
     </section>
   )
 }

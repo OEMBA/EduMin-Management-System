@@ -5,11 +5,11 @@ function linkClass({ isActive }) {
   return `sidebarLink${isActive ? ' isActive' : ''}`
 }
 
-export function Sidebar() {
+export function Sidebar({ isOpen = false, onClose }) {
   const { isDarkMode, toggleTheme } = useTheme()
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar${isOpen ? ' isMobileOpen' : ''}`}>
       <div className="sidebarBrand">
         <div className="sidebarLogo">
           <img className="sidebarLogoIcon" src="/graduate-hat.svg" alt="Graduate hat" />
@@ -18,17 +18,20 @@ export function Sidebar() {
           <div className="sidebarName">EduMin</div>
           <div className="sidebarTag">Management System</div>
         </div>
+        <button className="sidebarCloseBtn" type="button" onClick={onClose} aria-label="Close navigation menu">
+          ×
+        </button>
       </div>
 
       <nav className="sidebarNav" aria-label="Main navigation">
-        <NavLink className={linkClass} to="/dashboard">
+        <NavLink className={linkClass} to="/dashboard" onClick={onClose}>
           Dashboard
         </NavLink>
-        <NavLink className={linkClass} to="/students/add">
+        <NavLink className={linkClass} to="/students/add" onClick={onClose}>
           Add Students
         </NavLink>
 
-        <NavLink className={linkClass} to="/students/view">
+        <NavLink className={linkClass} to="/students/view" onClick={onClose}>
           View Students
         </NavLink>
       </nav>
