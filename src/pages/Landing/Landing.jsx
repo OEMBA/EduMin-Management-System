@@ -23,7 +23,7 @@ export function Landing() {
           and fast workflow.
         </p>
         <button type="button" className="landingCta" onClick={() => navigate('/onboard')}>
-          Get Started 🙂
+          Get Started →
         </button>
       </div>
 
