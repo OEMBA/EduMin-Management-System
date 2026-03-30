@@ -8,6 +8,7 @@ import { InstitutionProvider, useInstitution } from './context/InstitutionContex
 import { Onboarding } from './pages/Onboarding/Onboarding.jsx'
 import { AuthProvider, useAuth } from './context/AuthContext.jsx'
 import { AuthState } from './pages/AuthState/AuthState.jsx'
+import { Landing } from './pages/Landing/Landing.jsx'
 
 function RequireAppAccess({ children }) {
   const { isAuthenticated } = useAuth()
@@ -20,10 +21,11 @@ function RequireAppAccess({ children }) {
 
 function RedirectRoot() {
   const { isAuthenticated } = useAuth()
-  const { hasInstitutionProfile } = useInstitution()
+  const { hasInstitutionProfile, hasStoredAccounts } = useInstitution()
 
   if (isAuthenticated && hasInstitutionProfile) return <Navigate to="/dashboard" replace />
-  if (!isAuthenticated) return <Navigate to="/auth" replace />
+  if (!isAuthenticated && hasStoredAccounts) return <Navigate to="/auth" replace />
+  if (!isAuthenticated) return <Navigate to="/landing" replace />
   return <Navigate to="/onboard" replace />
 }
 
@@ -47,6 +49,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<RedirectRoot />} />
+          <Route path="/landing" element={<Landing />} />
           <Route
             path="/auth"
             element={
