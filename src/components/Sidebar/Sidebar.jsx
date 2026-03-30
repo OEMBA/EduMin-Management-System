@@ -39,7 +39,7 @@ function ViewStudentsIcon() {
   )
 }
 
-export function Sidebar({ isOpen = false, onClose }) {
+export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
   const { isDarkMode, toggleTheme } = useTheme()
   const { institution } = useInstitution()
   const adminName = institution?.adminName || 'Admin User'
@@ -54,7 +54,7 @@ export function Sidebar({ isOpen = false, onClose }) {
       .toUpperCase() || 'AU'
 
   return (
-    <aside className={`sidebar${isOpen ? ' isMobileOpen' : ''}`}>
+    <aside className={`sidebar${isOpen ? ' isMobileOpen' : ''}`} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
       <div className="sidebarBrand">
         <div className="sidebarLogo">
           <img className="sidebarLogoIcon" src="/graduate-hat.svg" alt="Graduate hat" />
@@ -94,15 +94,13 @@ export function Sidebar({ isOpen = false, onClose }) {
 
       <div className="sidebarFooter">
         <div className="sidebarThemeWrap">
-          <div className="sidebarThemeLabel">Theme</div>
           <button
-            className={`themeToggle${isDarkMode ? ' isDark' : ''}`}
+            className={`themeMiniToggle${isDarkMode ? ' isDark' : ''}`}
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle dark mode"
             aria-pressed={isDarkMode}
           >
-            <span className="themeToggleText">{isDarkMode ? 'Dark' : 'Light'}</span>
             <span className="themeToggleTrack">
               <span className="themeToggleThumb" />
             </span>
