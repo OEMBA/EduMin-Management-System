@@ -54,6 +54,16 @@ function isValidGhanaPhone(value) {
   return /^\+233\d{9}$/.test(String(value ?? '').trim())
 }
 
+function capitalizeFirstLetter(value) {
+  const str = String(value ?? '').trim()
+  if (!str) return ''
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
+function lowercaseEmail(value) {
+  return String(value ?? '').toLowerCase()
+}
+
 const initialForm = {
   firstName: '',
   secondName: '',
@@ -118,6 +128,14 @@ export function AddStudents() {
           setErrors((prev) => ({ ...prev, [field]: INVALID_STRING }))
           return
         }
+        // Apply capitalize first letter formatting
+        value = capitalizeFirstLetter(value)
+        clearError(field)
+      }
+
+      if (field === 'email') {
+        // Apply lowercase formatting for email
+        value = lowercaseEmail(value)
         clearError(field)
       }
 
@@ -136,7 +154,6 @@ export function AddStudents() {
       }
 
       setForm((prev) => ({ ...prev, [field]: value }))
-      clearError(field)
     }
   }
 
