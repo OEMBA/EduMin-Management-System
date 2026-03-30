@@ -94,6 +94,7 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
 
       <div className="sidebarFooter">
         <div className="sidebarThemeWrap">
+          <span className="themeMiniModeText">{isDarkMode ? 'Dark mode' : 'Light mode'}</span>
           <button
             className={`themeMiniToggle${isDarkMode ? ' isDark' : ''}`}
             type="button"
