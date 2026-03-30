@@ -55,9 +55,17 @@ function isValidGhanaPhone(value) {
 }
 
 function capitalizeFirstLetter(value) {
-  const str = String(value ?? '').trim()
+  const str = String(value ?? '').toLowerCase()
   if (!str) return ''
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+
+  const firstLetterIndex = str.search(/[a-z]/i)
+  if (firstLetterIndex === -1) return str
+
+  return (
+    str.slice(0, firstLetterIndex) +
+    str.charAt(firstLetterIndex).toUpperCase() +
+    str.slice(firstLetterIndex + 1)
+  )
 }
 
 function lowercaseEmail(value) {
