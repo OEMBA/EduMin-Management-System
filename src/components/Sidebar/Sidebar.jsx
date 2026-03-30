@@ -107,6 +107,8 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
           </button>
         </div>
 
+        <div className="sidebarFooterDivider" aria-hidden="true" />
+
         <div className="sidebarAdminCard" aria-label="Admin account">
           <div className="sidebarAdminAvatar" aria-hidden="true">
             {adminInitials}
