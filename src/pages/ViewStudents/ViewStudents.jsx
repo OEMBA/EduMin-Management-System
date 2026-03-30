@@ -257,22 +257,26 @@ export function ViewStudents() {
               const program = s.programOfStudy || '—'
               return (
                 <div className="vsRow" key={s.studentID || fullName}>
-                  <div className="vsCell mono">{s.studentID || '—'}</div>
+                  <div className="vsCell vsCellId mono" data-label="Student ID">
+                    {s.studentID || '—'}
+                  </div>
 
-                  <div className="vsCell">
+                  <div className="vsCell vsCellName" data-label="Full Name">
                     <div className="vsNameCell">
                       <div className="vsAvatar">{initialsFromStudent(student)}</div>
                       <div className="vsName">{fullName}</div>
                     </div>
                   </div>
 
-                  <div className="vsCell">
+                  <div className="vsCell vsCellLevel" data-label="Level">
                     <span className="vsLevelPill">{level}</span>
                   </div>
 
-                  <div className="vsCell">{program}</div>
+                  <div className="vsCell vsCellProgram" data-label="Program">
+                    {program}
+                  </div>
 
-                  <div className="vsCell vsActions">
+                  <div className="vsCell vsCellActions vsActions" data-label="Actions">
                     <button className="vsIconBtn vsEditBtn" type="button" onClick={() => setEditing(student)} aria-label="Edit">
                       ✎
                     </button>

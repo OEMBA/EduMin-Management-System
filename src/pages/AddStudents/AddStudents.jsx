@@ -485,7 +485,7 @@ export function AddStudents() {
 
       {showSuccess && (
         <div className="modalOverlay" role="dialog" aria-modal="true" aria-label="Student added successfully">
-          <div className="modal">
+          <div className="modal addSuccessModal">
             <div className="modalHeader">
               <div>
                 <div className="modalTitle">Success!</div>
@@ -493,11 +493,11 @@ export function AddStudents() {
               </div>
             </div>
 
-            <div className="modalBody">
+            <div className="modalBody addSuccessBody">
               <p>The student with ID <strong>{form.studentID}</strong> has been added to the database.</p>
             </div>
 
-            <div className="modalActions">
+            <div className="modalActions addSuccessActions">
               <button className="btnPrimary" type="button" onClick={handleAddAnother}>
                 Add Another Student
               </button>
