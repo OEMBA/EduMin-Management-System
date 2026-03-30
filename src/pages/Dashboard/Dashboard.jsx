@@ -1,7 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getStudentFullName, loadStudents } from '../../lib/studentsStorage.jsx'
+import { getStudentFullName, loadStudents, normalizeStudent } from '../../lib/studentsStorage.jsx'
 import { useNotifications } from '../../context/NotificationsContext.jsx'
+import { useGlobalSearch } from '../../context/SearchContext.jsx'
+
+function matchesQuery(student, query) {
+  if (!query) return true
+  const s = normalizeStudent(student)
+  const q = query.toLowerCase().trim()
+  if (!q) return true
+
+  return (
+    s.studentID.toLowerCase().includes(q) ||
+    s.firstName.toLowerCase().includes(q) ||
+    s.secondName.toLowerCase().includes(q) ||
+    s.otherNames.toLowerCase().includes(q) ||
+    s.programOfStudy.toLowerCase().includes(q)
+  )
+}
 
 const EVENT_STORAGE_KEY = 'events'
 const LEGACY_EVENT_STORAGE_KEY = 'upcomingEvents'
@@ -48,6 +64,7 @@ function dayNumber(dateString) {
 
 export function Dashboard() {
   const navigate = useNavigate()
+  const { query } = useGlobalSearch()
   const { addNotification, syncEventReminders, removeEventNotifications } = useNotifications()
   const [students] = useState(() => loadStudents())
   const [events, setEvents] = useState(() => loadEvents())
@@ -61,8 +78,9 @@ export function Dashboard() {
     syncEventReminders()
   }, [events, syncEventReminders])
 
-  const totalStudents = students.length
-  const recentlyAdmitted = useMemo(() => students.slice(-5).reverse(), [students])
+  const filteredStudents = useMemo(() => students.filter(s => matchesQuery(s, query)), [students, query])
+  const totalStudents = filteredStudents.length
+  const recentlyAdmitted = useMemo(() => filteredStudents.slice(-5).reverse(), [filteredStudents])
   const upcomingEvents = useMemo(() => {
     const future = events
       .map((e) => ({ ...e, dateValue: new Date(e.date).getTime() }))
@@ -175,11 +193,15 @@ export function Dashboard() {
         <div className="dashLower">
           <section className="dashPanelNavy">
             <div className="dashPanelHeader">
-              <h2 className="dashPanelTitle">Recently Admitted</h2>
+              <h2 className="dashPanelTitle">
+                {query ? `Search Results (${totalStudents} match${totalStudents !== 1 ? 'es' : ''})` : 'Recently Admitted'}
+              </h2>
             </div>
             <div className="dashList">
               {recentlyAdmitted.length === 0 ? (
-                <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px' }}>No admitted students yet.</div>
+                <div style={{ color: 'rgba(255,255,255,0.9)', fontSize: '13px' }}>
+                  {query ? 'No students match your search.' : 'No admitted students yet.'}
+                </div>
               ) : (
                 recentlyAdmitted.map((student, index) => {
                   const name = getStudentFullName(student) || 'Unnamed Student'

@@ -130,7 +130,7 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
         <div className="sidebarFooterDivider" aria-hidden="true" />
 
         <button
-          className="sidebarAdminCard sidebarAdminTrigger"
+          className="sidebarAdminCard"
           type="button"
           aria-label="Open account details"
           onClick={() => {
@@ -145,6 +145,7 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
             <div className="sidebarAdminName">{adminName}</div>
             <div className="sidebarAdminRole">Super Admin</div>
           </div>
+          <div className="sidebarAdminLogoutBadge">Logout</div>
         </button>
       </div>
 

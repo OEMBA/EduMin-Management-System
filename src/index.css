@@ -142,9 +142,6 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.sidebarAdminTrigger {
   width: calc(100% - 16px);
   border: 0;
   background: transparent;
@@ -152,10 +149,21 @@ a {
   text-align: left;
   border-radius: 12px;
   cursor: pointer;
+  font-family: inherit;
 }
 
-.sidebarAdminTrigger:hover {
+.sidebarAdminCard:hover {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebarAdminLogoutBadge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ef4444;
+  flex-shrink: 0;
 }
 
 .sidebarAccountOverlay {
@@ -343,17 +351,28 @@ a {
   color: rgba(12, 18, 32, 0.88);
 }
 
+.sidebarAdminLogoutBadge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
 .sidebarAdminAvatar {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.95);
   background: radial-gradient(circle at 30% 25%, #6f8eff 0%, #4f6df0 45%, #3552cd 100%);
   box-shadow: 0 10px 24px rgba(43, 80, 196, 0.32);
+  flex-shrink: 0;
 }
 
 .sidebarAdminMeta {
