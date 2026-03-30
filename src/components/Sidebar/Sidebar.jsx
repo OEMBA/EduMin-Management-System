@@ -1,6 +1,8 @@
-import { NavLink } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext.jsx'
 import { useInstitution } from '../../context/InstitutionContext.jsx'
+import { useAuth } from '../../context/AuthContext.jsx'
 
 function linkClass({ isActive }) {
   return `sidebarLink${isActive ? ' isActive' : ''}`
@@ -40,8 +42,12 @@ function ViewStudentsIcon() {
 }
 
 export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
+  const navigate = useNavigate()
   const { isDarkMode, toggleTheme } = useTheme()
   const { institution } = useInstitution()
+  const { logout } = useAuth()
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false)
+  const [isConfirmingLogout, setIsConfirmingLogout] = useState(false)
   const adminName = institution?.adminName || 'Admin User'
   const adminInitials =
     adminName
@@ -52,6 +58,19 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
       .map((chunk) => chunk[0])
       .join('')
       .toUpperCase() || 'AU'
+
+  function closeAccountModal() {
+    setIsAccountModalOpen(false)
+    setIsConfirmingLogout(false)
+  }
+
+  function onLogout() {
+    logout()
+    setIsAccountModalOpen(false)
+    setIsConfirmingLogout(false)
+    onClose?.()
+    navigate('/auth', { replace: true })
+  }
 
   return (
     <aside className={`sidebar${isOpen ? ' isMobileOpen' : ''}`} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
@@ -110,7 +129,15 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
 
         <div className="sidebarFooterDivider" aria-hidden="true" />
 
-        <div className="sidebarAdminCard" aria-label="Admin account">
+        <button
+          className="sidebarAdminCard sidebarAdminTrigger"
+          type="button"
+          aria-label="Open account details"
+          onClick={() => {
+            setIsConfirmingLogout(false)
+            setIsAccountModalOpen(true)
+          }}
+        >
           <div className="sidebarAdminAvatar" aria-hidden="true">
             {adminInitials}
           </div>
@@ -118,8 +145,64 @@ export function Sidebar({ isOpen = false, onClose, onTouchStart, onTouchEnd }) {
             <div className="sidebarAdminName">{adminName}</div>
             <div className="sidebarAdminRole">Super Admin</div>
           </div>
-        </div>
+        </button>
       </div>
+
+      {isAccountModalOpen ? (
+        <div
+          className="sidebarAccountOverlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Account details"
+          onClick={closeAccountModal}
+        >
+          <div className="sidebarAccountModal" onClick={(e) => e.stopPropagation()}>
+            <div className="sidebarAccountHead">
+              <div className="sidebarAccountTitle">Account Details</div>
+              <button className="sidebarAccountClose" type="button" onClick={closeAccountModal} aria-label="Close account details">
+                ×
+              </button>
+            </div>
+
+            <div className="sidebarAccountLine">
+              <span>Name</span>
+              <strong>{institution?.adminName || 'Administrator'}</strong>
+            </div>
+            <div className="sidebarAccountLine">
+              <span>Institution</span>
+              <strong>{institution?.institutionName || 'Not set'}</strong>
+            </div>
+            <div className="sidebarAccountLine">
+              <span>Address</span>
+              <strong>{institution?.address || 'Not set'}</strong>
+            </div>
+            <div className="sidebarAccountLine">
+              <span>Account Key</span>
+              <strong>{institution?.accountKey || 'Not set'}</strong>
+            </div>
+
+            <div className="sidebarAccountActions">
+              {isConfirmingLogout ? (
+                <>
+                  <div className="sidebarAccountWarn">Are you sure you want to logout?</div>
+                  <div className="sidebarAccountActionButtons">
+                    <button className="btnGhost" type="button" onClick={() => setIsConfirmingLogout(false)}>
+                      Cancel
+                    </button>
+                    <button className="btnDanger" type="button" onClick={onLogout}>
+                      Confirm Logout
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <button className="btnDanger" type="button" onClick={() => setIsConfirmingLogout(true)}>
+                  Logout
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </aside>
   )
 }
